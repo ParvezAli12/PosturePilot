@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your plan | PosturePilot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="topbar"><a class="brand" href="index.html">Posture<span>Pilot</span></a></header>
+  <main id="main">
+    <section class="panel" id="empty" hidden>
+      <h2>No plan yet</h2>
+      <p>Answer a few questions and we will build your routine.</p>
+      <a class="btn go" href="intake.html">Build my plan</a>
+    </section>
+
+    <section id="plan" hidden>
+      <h1 style="font-size:clamp(2rem,5vw,3rem)">Your daily routine</h1>
+      <div class="summary">
+        <div><b id="sMin"></b>minutes</div>
+        <div><b id="sCount"></b>exercises</div>
+        <div><b id="sDone"></b>sessions done</div>
+      </div>
+      <div id="notes"></div>
+      <div class="panel" id="list"></div>
+      <div class="row">
+        <button class="btn go" id="start">Start session</button>
+        <a class="btn alt" href="intake.html">Change my answers</a>
+      </div>
+      <p class="note" style="margin-top:20px">General guidance, not medical advice. Stop if you feel sharp pain, and see a doctor or physiotherapist if pain persists or gets worse.</p>
+    </section>
+  </main>
+</div>
+
+<dialog id="player" aria-labelledby="plTitle">
+  <div class="pl">
+    <div class="pl-head"><span id="plCount" class="note"></span><button class="btn alt" id="plClose" style="padding:.4em 1em">Close</button></div>
+    <h2 id="plTitle"></h2>
+    <svg id="plSvg"></svg>
+    <p class="big" id="plProgress" aria-live="polite"></p>
+    <div class="row" style="margin-bottom:14px">
+      <button class="btn go" id="plAct"></button>
+      <button class="btn alt" id="plPrev">Previous</button>
+      <button class="btn" id="plNext">Next exercise</button>
+    </div>
+    <h3>How to do it</h3>
+    <ol id="plSteps"></ol>
+    <div class="cues"><ul id="plCues"></ul></div>
+  </div>
+</dialog>
+
+<script src="js/storage.js"></script>
+<script src="js/exercises.js"></script>
+<script src="js/figure.js"></script>
+<script src="js/planner.js"></script>
+<script src="js/plan.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PosturePilot: posture exercises that work around your injuries</title>
+<meta name="description" content="A short daily routine with animated demos, matched to your age, body, posture problems and injuries.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="topbar row" style="justify-content:space-between">
+    <a class="brand" href="index.html">Posture<span>Pilot</span></a>
+    <a class="btn alt" href="intake.html" style="padding:.5em 1.1em">Build my plan</a>
+  </header>
+
+  <main>
+    <section class="hero2">
+      <div>
+        <h1>Posture exercises that work around your injuries.</h1>
+        <p class="lead">Tell PosturePilot your age, height, weight and where it hurts. You get a short daily routine with animated demos, and nothing that loads an injured area.</p>
+        <div class="row">
+          <a class="btn go" href="intake.html">Build my plan</a>
+          <a class="btn alt" href="#problems">See what we cover</a>
+        </div>
+        <p class="note" style="margin-top:14px">Free. No account. Your answers stay in your browser.</p>
+      </div>
+
+      <div class="stage2">
+        <svg id="hero" aria-hidden="true"></svg>
+        <div class="caption" id="heroCap" aria-live="polite"></div>
+        <div class="slider">
+          <label for="posture">Drag to change the posture</label>
+          <input id="posture" type="range" min="0" max="100" value="0">
+          <div class="ends"><span>Slouched</span><span>Upright</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="problems">
+      <h2>Pick the problem you want to fix</h2>
+      <p class="lede">Choose one to start. You can add more and mark any injuries on the next screen.</p>
+      <div class="cards" id="concernCards"></div>
+    </section>
+
+    <section class="block">
+      <h2>Built around your body</h2>
+      <div class="three">
+        <div><h3>Matched to you</h3><p>Age, height and weight set how many reps and how long the holds are, so a first session is not too much.</p></div>
+        <div><h3>Injury-aware</h3><p>Every exercise is tagged with the areas it loads. Mark an injury and the matching exercises disappear from your plan.</p></div>
+        <div><h3>Easy to follow</h3><p>Each exercise has an animated demo, step-by-step cues, a rep counter and a hold timer.</p></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>A look at the exercises</h2>
+      <p class="lede">These are real demos from the library. Your plan picks the ones that fit you.</p>
+      <div class="demos" id="demos"></div>
+    </section>
+
+    <section class="safe">
+      <h2>Hurt somewhere? We skip it.</h2>
+      <p>If you mark any of these areas, PosturePilot removes exercises that put load on them. If nothing safe is left for a problem, it says so and suggests seeing a doctor or physiotherapist instead of guessing.</p>
+      <ul class="chips" id="chips"></ul>
+    </section>
+
+    <section class="block">
+      <h2>Questions</h2>
+      <details><summary>Is this medical advice?</summary><p>No. PosturePilot gives general exercise guidance. See a doctor or physiotherapist for persistent or severe pain, numbness, or pain after an injury.</p></details>
+      <details><summary>How long is a session?</summary><p>Usually around 10 to 15 minutes. Your plan page shows the estimate for your routine.</p></details>
+      <details><summary>What do I need?</summary><p>A wall, a sturdy chair and a doorway. A mat is helpful for the floor exercises.</p></details>
+      <details><summary>Do I need an account?</summary><p>No. Your answers and completed sessions are saved only in your own browser.</p></details>
+    </section>
+
+    <section class="final">
+      <h2>Ready when you are</h2>
+      <p>It takes about a minute to answer the questions.</p>
+      <a class="btn go" href="intake.html">Build my plan</a>
+    </section>
+  </main>
+
+  <footer>
+    PosturePilot gives general exercise guidance and is not medical advice. Stop if you feel sharp pain, and see a doctor or physiotherapist for persistent or severe pain.
+  </footer>
+</div>
+<script src="js/exercises.js"></script>
+<script src="js/figure.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>

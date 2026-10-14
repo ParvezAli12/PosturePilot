@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your details | PosturePilot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="topbar"><a class="brand" href="index.html">Posture<span>Pilot</span></a></header>
+  <main>
+    <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+    <form class="panel" id="form" novalidate>
+
+      <section data-step="0">
+        <h2>About you</h2>
+        <p>We use these to pick a sensible intensity.</p>
+        <div class="field"><label for="age">Age (years)</label><input id="age" type="number" inputmode="numeric" min="10" max="90"></div>
+        <div class="field"><label for="weight">Weight (kg)</label><input id="weight" type="number" inputmode="decimal" min="25" max="250"></div>
+        <div class="field"><label for="height">Height (cm)</label><input id="height" type="number" inputmode="numeric" min="100" max="230"></div>
+      </section>
+
+      <section data-step="1" hidden>
+        <h2>What would you like to fix?</h2>
+        <p>Choose all that apply.</p>
+        <fieldset class="opts" id="concerns"><legend class="sr" style="position:absolute;left:-9999px">Posture concerns</legend></fieldset>
+      </section>
+
+      <section data-step="2" hidden>
+        <h2>Do you have any injuries?</h2>
+        <p>Pick every area that is injured or painful right now. Exercises that load those areas are removed from your plan. Leave all unticked if you have none.</p>
+        <fieldset class="opts" id="injuries"><legend class="sr" style="position:absolute;left:-9999px">Injured areas</legend></fieldset>
+      </section>
+
+      <section data-step="3" hidden>
+        <h2>One last safety check</h2>
+        <p>Do any of these apply to you?</p>
+        <fieldset class="opts" id="flags"><legend class="sr" style="position:absolute;left:-9999px">Safety check</legend></fieldset>
+      </section>
+
+      <p class="err" id="err" role="alert"></p>
+      <div class="row">
+        <button type="button" class="btn alt" id="back" hidden>Back</button>
+        <button type="button" class="btn go" id="next">Next</button>
+      </div>
+    </form>
+
+    <section class="panel stop" id="stop" hidden>
+      <h2>Please check with a professional first</h2>
+      <p>Because of what you selected, exercises from a website are not the right first step. A doctor or physiotherapist can find the cause and tell you what is safe for you.</p>
+      <a class="btn alt" href="index.html">Back to home</a>
+    </section>
+  </main>
+</div>
+<script src="js/storage.js"></script>
+<script src="js/exercises.js"></script>
+<script src="js/intake.js"></script>
+</body>
+</html>
