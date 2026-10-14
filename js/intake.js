@@ -13,8 +13,11 @@
   INJURIES.forEach((i) => box($('injuries'), 'injury', i.id, i.label));
   RED_FLAGS.forEach((f, i) => box($('flags'), 'flag', i, f));
 
-  const pre = new URLSearchParams(location.search).get('c');
+  const qs = new URLSearchParams(location.search);
+  const pre = qs.get('c');
   if (pre) document.querySelector(`input[name=concern][value="${pre}"]`)?.click();
+  (qs.get('i') || '').split(',').filter(Boolean).forEach((id) =>
+    document.querySelector(`input[name=injury][value="${id}"]`)?.click());
 
   const checked = (name) => [...document.querySelectorAll(`input[name=${name}]:checked`)].map((x) => x.value);
   const num = (id) => parseFloat($(id).value);
