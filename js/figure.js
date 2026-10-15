@@ -33,19 +33,25 @@ const Figure = (() => {
     const mid = [(hip[0] + sho[0]) / 2, (hip[1] + sho[1]) / 2];
     const pp = [-up[1], up[0]];
     const ctrl = [mid[0] + pp[0] * P.bend * 2, mid[1] + pp[1] * P.bend * 2];
-    const L = (a, b, c) => `<polyline points="${n(a[0])},${n(a[1])} ${n(b[0])},${n(b[1])} ${n(c[0])},${n(c[1])}" fill="none" stroke="#13222C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
-    const Lf = (a, b, c) => `<polyline points="${n(a[0])},${n(a[1])} ${n(b[0])},${n(b[1])} ${n(c[0])},${n(c[1])}" fill="none" stroke="#9FB0B9" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+    const line = (a, b, c, color) =>
+      `<polyline points="${n(a[0])},${n(a[1])} ${n(b[0])},${n(b[1])} ${n(c[0])},${n(c[1])}" fill="none" style="stroke:var(${color})" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
+    const L = (a, b, c) => line(a, b, c, '--fg-ink');
+    const Lf = (a, b, c) => line(a, b, c, '--fg-far');
+    const prop = (d, wd) => `<path d="${d}" fill="none" style="stroke:var(--fg-prop)" stroke-width="${wd}"/>`;
+
     const floor = meta.floor || 210;
-    let props = `<line x1="10" y1="${floor}" x2="290" y2="${floor}" stroke="#53656F" stroke-width="2"/>`;
-    if (meta.prop === 'wall') { const x = (meta.wallX ?? 132); props += `<line x1="${x}" y1="0" x2="${x}" y2="${floor}" stroke="#53656F" stroke-width="4"/>`; }
-    if (meta.prop === 'door') { const x = e[0] + 6; props += `<line x1="${n(x)}" y1="8" x2="${n(x)}" y2="${floor}" stroke="#53656F" stroke-width="5"/>`; }
-    if (meta.prop === 'chair') props += `<path d="M112 118 V158 H146 M118 158 V${floor} M142 158 V${floor}" fill="none" stroke="#53656F" stroke-width="4"/>`;
-    if (meta.prop === 'bench') props += `<path d="M182 154 H228 M188 154 V${floor} M222 154 V${floor}" fill="none" stroke="#53656F" stroke-width="4"/>`;
+    let props = prop(`M10 ${floor} H290`, 2);
+    if (meta.prop === 'wall') { const x = (meta.wallX ?? 132); props += prop(`M${x} 0 V${floor}`, 4); }
+    if (meta.prop === 'door') { const x = e[0] + 6; props += prop(`M${n(x)} 8 V${floor}`, 5); }
+    if (meta.prop === 'chair') props += prop(`M112 118 V158 H146 M118 158 V${floor} M142 158 V${floor}`, 4);
+    if (meta.prop === 'bench') props += prop(`M182 154 H228 M188 154 V${floor} M222 154 V${floor}`, 4);
+
     return props + Lf(sho, e2, w2) + Lf(hip, kn2, ft2) +
-      `<path d="M${n(hip[0])} ${n(hip[1])} Q${n(ctrl[0])} ${n(ctrl[1])} ${n(sho[0])} ${n(sho[1])}" fill="none" stroke="#1D7A78" stroke-width="8" stroke-linecap="round"/>` +
+      `<path d="M${n(hip[0])} ${n(hip[1])} Q${n(ctrl[0])} ${n(ctrl[1])} ${n(sho[0])} ${n(sho[1])}" fill="none" style="stroke:var(--fg-spine)" stroke-width="8" stroke-linecap="round"/>` +
       L(hip, kn, ft) + L(sho, e, w) +
-      `<line x1="${n(sho[0])}" y1="${n(sho[1])}" x2="${n(neck[0])}" y2="${n(neck[1])}" stroke="#13222C" stroke-width="5" stroke-linecap="round"/>` +
-      `<circle cx="${n(head[0])}" cy="${n(head[1])}" r="11" fill="#F9FBFB" stroke="#13222C" stroke-width="4"/>`;
+      `<line x1="${n(sho[0])}" y1="${n(sho[1])}" x2="${n(neck[0])}" y2="${n(neck[1])}" style="stroke:var(--fg-ink)" stroke-width="5" stroke-linecap="round"/>` +
+      `<circle cx="${n(head[0])}" cy="${n(head[1])}" r="11" style="fill:var(--fg-head);stroke:var(--fg-ink)" stroke-width="4"/>`;
   }
 
   /* Plays pose A -> B -> A on an <svg>. Returns a stop() function. */
