@@ -7,11 +7,37 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@700;800&display=swap" rel="stylesheet">
+<script src="js/theme.js"></script>
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <div class="wrap">
-  <header class="topbar"><a class="brand" href="index.html">Posture<span>Pilot</span></a></header>
+    <header class="topbar row" style="justify-content:space-between">
+    <a class="brand" href="index.html">Posture<span>Pilot</span></a>
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to dark mode">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <defs>
+      <mask id="moonCut">
+        <rect width="24" height="24" fill="#fff"/>
+        <circle class="cut" cx="17" cy="8" r="6.5" fill="#000"/>
+      </mask>
+    </defs>
+    <g mask="url(#moonCut)"><circle class="core" cx="12" cy="12" r="5"/></g>
+    <g class="rays" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(0 12 12)"/>
+      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(45 12 12)"/>
+      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(90 12 12)"/>
+      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(135 12 12)"/>
+      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(180 12 12)"/>
+      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(225 12 12)"/>
+      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(270 12 12)"/>
+      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(315 12 12)"/>
+    </g>
+    <circle class="star s1" cx="19.5" cy="4.5" r="1"/>
+    <circle class="star s2" cx="21.5" cy="9.5" r=".7"/>
+  </svg>
+</button>
+  </header>
   <main>
     <div class="progress" aria-hidden="true"><i id="bar"></i></div>
     <form class="panel" id="form" novalidate>
