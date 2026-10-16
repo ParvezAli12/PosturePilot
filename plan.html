@@ -4,40 +4,41 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Your plan | PosturePilot</title>
+<script src="js/theme.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@700;800&display=swap" rel="stylesheet">
-<script src="js/theme.js"></script>
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <div class="wrap">
-    <header class="topbar row" style="justify-content:space-between">
+  <header class="topbar row" style="justify-content:space-between">
     <a class="brand" href="index.html">Posture<span>Pilot</span></a>
     <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to dark mode">
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <defs>
-      <mask id="moonCut">
-        <rect width="24" height="24" fill="#fff"/>
-        <circle class="cut" cx="17" cy="8" r="6.5" fill="#000"/>
-      </mask>
-    </defs>
-    <g mask="url(#moonCut)"><circle class="core" cx="12" cy="12" r="5"/></g>
-    <g class="rays" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(0 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(45 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(90 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(135 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(180 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(225 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(270 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(315 12 12)"/>
-    </g>
-    <circle class="star s1" cx="19.5" cy="4.5" r="1"/>
-    <circle class="star s2" cx="21.5" cy="9.5" r=".7"/>
-  </svg>
-</button>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <defs>
+          <mask id="moonCut">
+            <rect width="24" height="24" fill="#fff"/>
+            <circle class="cut" cx="17" cy="8" r="6.5" fill="#000"/>
+          </mask>
+        </defs>
+        <g mask="url(#moonCut)"><circle class="core" cx="12" cy="12" r="5"/></g>
+        <g class="rays" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(0 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(45 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(90 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(135 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(180 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(225 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(270 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(315 12 12)"/>
+        </g>
+        <circle class="star s1" cx="19.5" cy="4.5" r="1"/>
+        <circle class="star s2" cx="21.5" cy="9.5" r=".7"/>
+      </svg>
+    </button>
   </header>
+
   <main id="main">
     <section class="panel" id="empty" hidden>
       <h2>No plan yet</h2>
@@ -51,6 +52,7 @@
         <div><b id="sMin"></b>minutes</div>
         <div><b id="sCount"></b>exercises</div>
         <div><b id="sDone"></b>sessions done</div>
+        <div><b id="sLoad"></b>today's intensity</div>
       </div>
       <div id="notes"></div>
       <div class="panel" id="list"></div>
@@ -58,11 +60,20 @@
         <button class="btn go" id="start">Start session</button>
         <a class="btn alt" href="intake.html">Change my answers</a>
       </div>
-      <p class="note" style="margin-top:20px">General guidance, not medical advice. Stop if you feel sharp pain, and see a doctor or physiotherapist if pain persists or gets worse.</p>
+
+      <section class="panel" id="progress" style="margin-top:28px">
+        <h2>Progress</h2>
+        <p class="note" id="pStats"></p>
+        <div id="pChart"></div>
+        <div id="pBanned"></div>
+      </section>
+
+      <p class="note">General guidance, not medical advice. Stop if you feel sharp pain, and see a doctor or physiotherapist if pain persists or gets worse.</p>
     </section>
   </main>
 </div>
 
+<!-- session player -->
 <dialog id="player" aria-labelledby="plTitle">
   <div class="pl">
     <div class="pl-head"><span id="plCount" class="note"></span><button class="btn alt" id="plClose" style="padding:.4em 1em">Close</button></div>
@@ -77,6 +88,23 @@
     <h3>How to do it</h3>
     <ol id="plSteps"></ol>
     <div class="cues"><ul id="plCues"></ul></div>
+  </div>
+</dialog>
+
+<!-- check-in after a session -->
+<dialog id="checkin" aria-labelledby="ciTitle">
+  <div class="pl">
+    <h2 id="ciTitle">How did that feel?</h2>
+    <label for="ciPain">Pain right now (0 = none, 10 = worst)</label>
+    <input id="ciPain" type="range" min="0" max="10" value="3">
+    <p class="big" id="ciVal" aria-live="polite"></p>
+    <p class="note" id="ciAdvice" aria-live="polite" style="min-height:1.5em"></p>
+    <h3>Did any exercise hurt?</h3>
+    <fieldset class="opts" id="ciList"><legend style="position:absolute;left:-9999px">Exercises that hurt</legend></fieldset>
+    <div class="row">
+      <button class="btn go" id="ciSave">Save check-in</button>
+      <button class="btn alt" id="ciSkip">Skip rating</button>
+    </div>
   </div>
 </dialog>
 
