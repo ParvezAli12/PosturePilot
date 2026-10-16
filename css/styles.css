@@ -131,4 +131,12 @@ dialog::backdrop{background:rgba(10,18,24,.6)}
 ::view-transition-old(root){z-index:1}
 ::view-transition-new(root){z-index:2}
 
+/* ---------- feedback loop ---------- */
+.why{font-size:.9rem;color:var(--link);margin:.45em 0 0}
+input[type=range]{width:100%;accent-color:var(--teal);height:28px}
+#pChart svg{width:100%;max-width:420px;height:auto;background:var(--mist);border-radius:12px;display:block}
+#pChart .gl{stroke:var(--edge);stroke-width:1;stroke-dasharray:4 4;opacity:.6}
+#pChart .ln{fill:none;stroke:var(--teal);stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+#pChart .dot{fill:var(--teal)}
+
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
