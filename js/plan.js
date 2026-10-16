@@ -3,38 +3,88 @@
   const profile = Store.get('profile');
   if (!profile) { $('empty').hidden = false; return; }
 
-  const plan = Planner.build(profile);
   const byId = (id) => EXERCISES.find((e) => e.id === id);
-  const sessions = () => (Store.get('sessions', []) || []).length;
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
-  $('plan').hidden = false;
-  $('sMin').textContent = plan.minutes;
-  $('sCount').textContent = plan.items.length;
-  $('sDone').textContent = sessions();
-
-  plan.notes.forEach((n) => {
-    const d = document.createElement('div'); d.className = 'warn'; d.textContent = n; $('notes').appendChild(d);
+  /* ---------- history (old saves stored plain date strings) ---------- */
+  const load = () => ({
+    sessions: (Store.get('sessions', []) || []).map((s) => (typeof s === 'string' ? { date: s } : s)),
+    banned: Store.get('banned', []) || []
   });
 
-  if (!plan.items.length) {
-    $('list').innerHTML = '<p>We could not find safe exercises for your answers. Please see a doctor or physiotherapist.</p>';
-    $('start').hidden = true;
-    return;
+  let plan;
+
+  /* ---------- render plan + progress ---------- */
+  function render() {
+    const h = load();
+    plan = Planner.build(profile, h);
+    $('plan').hidden = false;
+    $('sMin').textContent = plan.minutes;
+    $('sCount').textContent = plan.items.length;
+    $('sDone').textContent = h.sessions.length;
+    $('sLoad').textContent = Math.round(plan.factor * 100) + '%';
+
+    $('notes').innerHTML = '';
+    plan.notes.forEach((n) => {
+      const d = document.createElement('div'); d.className = 'warn'; d.textContent = n; $('notes').appendChild(d);
+    });
+
+    const dose = (i) => i.hold ? `${i.sets} x ${i.reps} holds of ${i.hold}s` : `${i.sets} x ${i.reps} reps`;
+    if (!plan.items.length) {
+      $('list').innerHTML = '<p>We could not find safe exercises for your answers. Please see a doctor or physiotherapist.</p>';
+      $('start').hidden = true;
+    } else {
+      $('start').hidden = false;
+      $('list').innerHTML = plan.items.map((i) => {
+        const e = byId(i.id);
+        return `<div class="ex"><div><h3>${e.name}</h3><p style="margin:0">${e.why}</p>
+          <p class="why">Why this exercise: ${cap(i.why.join('; '))}.</p></div>
+          <div class="dose">${dose(i)}</div></div>`;
+      }).join('');
+    }
+    renderProgress(h);
   }
 
-  const dose = (i) => i.hold ? `${i.sets} x ${i.reps} holds of ${i.hold}s` : `${i.sets} x ${i.reps} reps`;
-  $('list').innerHTML = plan.items.map((i) => {
-    const e = byId(i.id);
-    return `<div class="ex"><div><h3>${e.name}</h3><p style="margin:0">${e.why}</p></div><div class="dose">${dose(i)}</div></div>`;
-  }).join('');
+  function chart(vals) {
+    if (!vals.length) return '<p class="note">Rate your pain after a session and your trend will appear here.</p>';
+    const W = 300, H = 90, pad = 12;
+    const step = vals.length > 1 ? (W - 2 * pad) / (vals.length - 1) : 0;
+    const x = (i) => (vals.length > 1 ? pad + i * step : W / 2);
+    const y = (v) => H - pad - (v / 10) * (H - 2 * pad);
+    const pts = vals.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Pain after your last ${vals.length} sessions: ${vals.join(', ')} out of 10">
+      <line class="gl" x1="${pad}" x2="${W - pad}" y1="${y(7).toFixed(1)}" y2="${y(7).toFixed(1)}"/>
+      <polyline class="ln" points="${pts}"/>
+      ${vals.map((v, i) => `<circle class="dot" cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="4"/>`).join('')}
+    </svg><p class="note" style="margin:4px 0 0">Pain after each of your last ${vals.length} rated sessions. The dashed line marks 7/10.</p>`;
+  }
+
+  function renderProgress(h) {
+    const pains = h.sessions.map((s) => s.pain).filter((p) => typeof p === 'number').slice(-10);
+    const recent = pains.slice(-5);
+    $('pStats').textContent = recent.length
+      ? `Average pain over your last ${recent.length} rated session${recent.length > 1 ? 's' : ''}: ${(recent.reduce((a, b) => a + b, 0) / recent.length).toFixed(1)} out of 10.`
+      : 'No rated sessions yet.';
+    $('pChart').innerHTML = chart(pains);
+    $('pBanned').innerHTML = h.banned.length
+      ? `<h3 style="margin-top:18px">Paused exercises</h3>` + h.banned.map((id) =>
+          `<div class="row" style="margin-bottom:8px"><span>${byId(id)?.name || id}</span>
+           <button type="button" class="btn alt" data-restore="${id}" style="padding:.3em .9em">Restore</button></div>`).join('')
+      : '';
+  }
+
+  $('pBanned').addEventListener('click', (ev) => {
+    const b = ev.target.closest('[data-restore]'); if (!b) return;
+    Store.set('banned', (Store.get('banned', []) || []).filter((id) => id !== b.dataset.restore));
+    render();
+  });
 
   /* ---------- session player ---------- */
   const dlg = $('player');
   let idx = 0, set = 1, rep = 0, timer = null, stopAnim = null;
-
   const clearTimer = () => { clearInterval(timer); timer = null; };
 
-  function load(i) {
+  function loadExercise(i) {
     clearTimer();
     idx = Math.max(0, Math.min(plan.items.length - 1, i));
     set = 1; rep = 0;
@@ -78,16 +128,49 @@
     }, 1000);
   };
 
-  $('plPrev').onclick = () => load(idx - 1);
+  $('plPrev').onclick = () => loadExercise(idx - 1);
   $('plNext').onclick = () => {
-    if (idx < plan.items.length - 1) { load(idx + 1); return; }
-    const log = Store.get('sessions', []) || [];
-    log.push(new Date().toISOString().slice(0, 10));
-    Store.set('sessions', log);
-    $('sDone').textContent = log.length;
+    if (idx < plan.items.length - 1) { loadExercise(idx + 1); return; }
     dlg.close();
+    openCheckin();
   };
-  $('start').onclick = () => { dlg.showModal(); load(0); };
+  $('start').onclick = () => { dlg.showModal(); loadExercise(0); };
   $('plClose').onclick = () => dlg.close();
   dlg.addEventListener('close', () => { clearTimer(); stopAnim?.(); });
+
+  /* ---------- check-in after a session ---------- */
+  const ci = $('checkin');
+  const painText = (p) => (p === 0 ? 'No pain' : p <= 3 ? 'Mild' : p <= 6 ? 'Moderate' : 'Strong');
+  function showPain() {
+    const p = +$('ciPain').value;
+    $('ciVal').textContent = `${p} / 10: ${painText(p)}`;
+    $('ciAdvice').textContent = p >= 7
+      ? 'Strong pain: stop for today and consider seeing a doctor or physiotherapist.'
+      : p >= 4 ? 'Moderate pain: tomorrow\'s plan will be lighter.' : '';
+  }
+  $('ciPain').addEventListener('input', showPain);
+
+  function openCheckin() {
+    $('ciPain').value = 3; showPain();
+    $('ciList').innerHTML = plan.items.map((i) =>
+      `<label class="opt"><input type="checkbox" value="${i.id}"><span>${byId(i.id).name}</span></label>`).join('');
+    ci.showModal();
+  }
+
+  function saveSession(entry, hurt) {
+    const h = load();
+    h.sessions.push(entry);
+    Store.set('sessions', h.sessions);
+    if (hurt && hurt.length) Store.set('banned', [...new Set([...h.banned, ...hurt])]);
+    ci.close();
+    render();
+  }
+  const today = () => new Date().toISOString().slice(0, 10);
+  $('ciSave').onclick = () => {
+    const hurt = [...$('ciList').querySelectorAll('input:checked')].map((x) => x.value);
+    saveSession({ date: today(), pain: +$('ciPain').value, hurt }, hurt);
+  };
+  $('ciSkip').onclick = () => saveSession({ date: today() }, []);
+
+  render();
 })();
