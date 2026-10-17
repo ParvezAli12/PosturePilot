@@ -18,10 +18,11 @@
   --danger:#B3402F; --danger-text:#B3402F; --on-danger:#FFFFFF;
   --sel:#E4F2F1; --stop-bg:#FBEDEA; --warn-bg:#FFF4DE; --skip-bg:#F1F4F5;
   /* stick figure */
-  --fg-ink:#13222C; --fg-far:#9FB0B9; --fg-spine:#1D7A78; --fg-prop:#53656F; --fg-head:#F9FBFB;
-  --font-head:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
-  --font-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
-  color-scheme:light;
+  /* character */
+  --fg-skin:#E7B592; --fg-skin-far:#C99A78; --fg-hair:#33261F;
+  --fg-shirt:#1D7A78; --fg-shirt-far:#16605E;
+  --fg-pants:#2C4A5E; --fg-pants-far:#1F3646;
+  --fg-shoe:#13222C; --fg-prop:#53656F; --fg-shadow:rgba(19,34,44,.14);
 }
 :root[data-theme="dark"]{
   --bg:#0E181F;
@@ -41,7 +42,10 @@
   --btn-bg:#3FA8A2; --btn-fg:#0E181F; --btn-hover:#5BBDB7;
   --danger:#C4503C; --danger-text:#F0907D; --on-danger:#FFFFFF;
   --sel:#1B3A3A; --stop-bg:#3A211D; --warn-bg:#3A3020; --skip-bg:#1A2830;
-  --fg-ink:#E6EEF1; --fg-far:#5F7C8A; --fg-spine:#4FB3AE; --fg-prop:#7C97A4; --fg-head:#16252E;
+  --fg-skin:#E2AE8B; --fg-skin-far:#B88A6B; --fg-hair:#2B2019;
+  --fg-shirt:#3FA8A2; --fg-shirt-far:#2B7F7B;
+  --fg-pants:#7FA3B6; --fg-pants-far:#5C8195;
+  --fg-shoe:#E6EEF1; --fg-prop:#7C97A4; --fg-shadow:rgba(0,0,0,.35);
   color-scheme:dark;
 }
 
