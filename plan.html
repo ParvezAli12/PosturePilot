@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/landing.css">
+<link rel="stylesheet" href="css/workout.css">
 </head>
 <body>
 <div class="wrap">
@@ -48,6 +50,7 @@
 
     <section id="plan" hidden>
       <h1 style="font-size:clamp(2rem,5vw,3rem)">Your daily routine</h1>
+      <p class="saved" id="saved"></p>
       <div class="summary">
         <div><b id="sMin"></b>minutes</div>
         <div><b id="sCount"></b>exercises</div>
@@ -55,10 +58,24 @@
         <div><b id="sLoad"></b>today's intensity</div>
       </div>
       <div id="notes"></div>
+
+      <details class="how">
+        <summary>How a workout works (and what "hold" means)</summary>
+        <ul>
+          <li><b>One workout = rounds.</b> You do every exercise once (round 1), rest, then go through the whole list again (round 2).</li>
+          <li><b>Each exercise is timed</b> (about 1 minute). A guided timer tells you what to do and when.</li>
+          <li><b>Hold</b> means move into the position, then stay still and keep breathing normally until the timer says <b>Relax</b>.</li>
+          <li><b>Relax</b> is a few seconds to let go before the next repeat.</li>
+          <li><b>Two sides:</b> for exercises done one side at a time, the timer tells you to switch halfway.</li>
+          <li><b>Rest</b> between exercises is 30 seconds by default. You can change it, and the next exercise starts by itself.</li>
+        </ul>
+      </details>
+
       <div class="panel" id="list"></div>
       <div class="row">
-        <button class="btn go" id="start">Start session</button>
+        <button class="btn go" id="start">Start workout</button>
         <a class="btn alt" href="intake.html">Change my answers</a>
+        <button class="btn alt" id="wipe" type="button">Delete my plan</button>
       </div>
 
       <section class="panel" id="progress" style="margin-top:28px">
@@ -73,25 +90,65 @@
   </main>
 </div>
 
-<!-- session player -->
-<dialog id="player" aria-labelledby="plTitle">
-  <div class="pl">
-    <div class="pl-head"><span id="plCount" class="note"></span><button class="btn alt" id="plClose" style="padding:.4em 1em">Close</button></div>
-    <h2 id="plTitle"></h2>
-    <svg id="plSvg"></svg>
-    <p class="big" id="plProgress" aria-live="polite"></p>
-    <div class="row" style="margin-bottom:14px">
-      <button class="btn go" id="plAct"></button>
-      <button class="btn alt" id="plPrev">Previous</button>
-      <button class="btn" id="plNext">Next exercise</button>
-    </div>
-    <h3>How to do it</h3>
-    <ol id="plSteps"></ol>
-    <div class="cues"><ul id="plCues"></ul></div>
-  </div>
-</dialog>
+<!-- full-screen workout -->
+<div class="wo" id="wo" hidden role="dialog" aria-modal="true" aria-label="Workout">
 
-<!-- check-in after a session -->
+  <section class="wo-screen wo-setup" id="woSetup">
+    <button type="button" class="wo-x" data-exit aria-label="Close">Close</button>
+    <h2>Ready for your workout?</h2>
+    <p class="wo-sub" id="woSummary"></p>
+    <div class="wo-set">
+      <div><label>Each exercise</label><div class="seg" id="segWork"></div></div>
+      <div><label>Rest between exercises</label><div class="seg" id="segRest"></div></div>
+      <div><label>Rounds</label><div class="seg" id="segRounds"></div></div>
+    </div>
+    <p class="note" id="woAdjust"></p>
+    <ol class="wo-list" id="woList"></ol>
+    <div class="row"><button type="button" class="btn go big" id="woStart">Start workout</button></div>
+  </section>
+
+  <section class="wo-screen" id="woActive" hidden>
+    <div class="wo-top">
+      <button type="button" class="wo-x" data-exit>End</button>
+      <span class="wo-prog" id="woProg"></span>
+      <button type="button" class="wo-x" id="woMute" aria-pressed="false">Sound on</button>
+    </div>
+    <div class="wo-bar" aria-hidden="true"><i id="woBar"></i></div>
+    <div class="wo-main">
+      <div class="wo-fig"><svg id="woSvg"></svg><div class="wo-flash" id="woFlash" hidden><span></span></div></div>
+      <div class="wo-info">
+        <span class="wo-pill" id="woPill"></span>
+        <h2 class="wo-name" id="woName"></h2>
+        <div class="wo-row">
+          <div class="wo-timer">
+            <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="trk" cx="60" cy="60" r="54"/><circle class="arc" id="woArc" cx="60" cy="60" r="54" transform="rotate(-90 60 60)"/></svg>
+            <b id="woTime" aria-live="off"></b>
+          </div>
+          <div>
+            <p class="wo-cue" id="woCue"></p>
+            <p class="wo-sub2" id="woSub2"></p>
+            <p class="wo-side" id="woSide"></p>
+          </div>
+        </div>
+        <ol class="wo-steps" id="woSteps"></ol>
+        <p class="wo-tips" id="woTips"></p>
+      </div>
+    </div>
+    <div class="wo-ctl">
+      <button type="button" class="btn alt" id="woPause">Pause</button>
+      <button type="button" class="btn alt" id="woPlus" hidden>+15 s rest</button>
+      <button type="button" class="btn" id="woSkip">Skip</button>
+    </div>
+  </section>
+
+  <section class="wo-screen wo-done" id="woDone" hidden>
+    <h2>Workout complete</h2>
+    <p class="wo-sub" id="woDoneText"></p>
+    <button type="button" class="btn go big" id="woFinish">Continue</button>
+  </section>
+</div>
+
+<!-- check-in after a workout -->
 <dialog id="checkin" aria-labelledby="ciTitle">
   <div class="pl">
     <h2 id="ciTitle">How did that feel?</h2>
@@ -110,6 +167,7 @@
 
 <script src="js/storage.js"></script>
 <script src="js/exercises.js"></script>
+<script src="js/workout-data.js"></script>
 <script src="js/figure.js"></script>
 <script src="js/planner.js"></script>
 <script src="js/plan.js"></script>
