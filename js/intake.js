@@ -13,6 +13,15 @@
   INJURIES.forEach((i) => box($('injuries'), 'injury', i.id, i.label));
   RED_FLAGS.forEach((f, i) => box($('flags'), 'flag', i, f));
 
+  
+  /* coming back to change answers: start from what was saved */
+  const saved = Store.get('profile');
+  if (saved && !location.search) {
+    ['age', 'weight', 'height'].forEach((k) => { if (saved[k]) $(k).value = saved[k]; });
+    (saved.concerns || []).forEach((id) => { const b = document.querySelector(`input[name=concern][value="${id}"]`); if (b) b.checked = true; });
+    (saved.injuries || []).forEach((id) => { const b = document.querySelector(`input[name=injury][value="${id}"]`); if (b) b.checked = true; });
+  }
+
   const qs = new URLSearchParams(location.search);
   const pre = qs.get('c');
   if (pre) document.querySelector(`input[name=concern][value="${pre}"]`)?.click();
@@ -58,6 +67,7 @@
       age: num('age'), weight: num('weight'), height: num('height'),
       concerns: checked('concern'), injuries: checked('injury')
     });
+        Store.set('planCreated', new Date().toISOString().slice(0, 10));
     location.href = 'plan.html';
   };
   $('form').addEventListener('submit', (e) => e.preventDefault());
