@@ -9,6 +9,18 @@
   const svg = $('hero'), cap = $('heroCap'), slider = $('posture');
   svg.setAttribute('viewBox', '0 0 300 230');
 
+  /* Fallback landmark positions, worked out from the pose angles, so this page
+     works with any version of figure.js. */
+  const RAD = Math.PI / 180;
+  function landmarks(P) {
+    const hip = [P.hx, P.hy];
+    const sho = [hip[0] + Math.sin(P.p * RAD) * 60, hip[1] - Math.cos(P.p * RAD) * 60 - P.sh];
+    const head = [sho[0] + Math.sin((P.p + P.h) * RAD) * 21 + P.hf, sho[1] - Math.cos((P.p + P.h) * RAD) * 21];
+    const kn = [hip[0] + Math.sin(P.t * RAD) * 46, hip[1] + Math.cos(P.t * RAD) * 46];
+    const ft = [kn[0] + Math.sin(P.s * RAD) * 44, kn[1] + Math.cos(P.s * RAD) * 44];
+    return { head, sho, hip, kn, ft };
+  }
+
   const LANDMARKS = [['Ear', 'head'], ['Shoulder', 'sho'], ['Hip', 'hip'], ['Knee', 'kn']];
   const words = [
     [34, 'Slouched: the head and shoulders sit ahead of the line.'],
@@ -19,7 +31,7 @@
 
   function render(v) {
     const P = Figure.lerp(A, B, v / 100);
-    const g = Figure.grounded(P);
+    const g = Figure.grounded ? Figure.grounded(P) : landmarks(P);   // newer figure.js rests the body on the floor
     const px = g.ft[0];                                       // plumb line drops from the ankle
     const under = `<line x1="${px.toFixed(1)}" y1="4" x2="${px.toFixed(1)}" y2="212" stroke-width="1.5" stroke-dasharray="5 4" style="stroke:var(--amber);opacity:.9"/>`;
     let over = '', read = '';
@@ -63,18 +75,17 @@
   $('nCon').textContent = CONCERNS.filter((c) => c.id !== 'general').length;
   $('nInj').textContent = INJURIES.length;
 
-  /* ---------- problem index ---------- */
+  /* ---------- short description for each posture problem ---------- */
   const blurb = {
+    all: 'Every problem the library covers.',
     'forward-head': 'Head carried ahead of the shoulders, usually from screens.',
     'rounded-shoulders': 'Shoulders curl forward and the chest feels tight.',
     'uneven-shoulders': 'One shoulder sits higher or further forward than the other.',
     'upper-back': 'Stiffness across the upper back and the back of the neck.',
     'lower-back': 'Aching or stiffness low in the back, often after sitting.',
     'knee': 'Knee discomfort that needs gentle strengthening.',
-    'general': 'Not sure yet? Start with a balanced routine.'
+    'general': 'A balanced routine when you are not sure where to start.'
   };
-  $('concernIndex').innerHTML = CONCERNS.map((c) =>
-    `<li><a href="intake.html?c=${c.id}"><span class="n">${c.label}</span><span class="d">${blurb[c.id] || ''}</span><span class="go" aria-hidden="true">&rarr;</span></a></li>`).join('');
 
   /* ---------- the filter ---------- */
   const state2 = { c: 'all', inj: new Set() };
@@ -113,6 +124,7 @@
     const b = ev.target.closest('[data-c]'); if (!b) return;
     state2.c = b.dataset.c;
     $('concernTabs').querySelectorAll('.tab').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    $('concernNote').textContent = blurb[state2.c] || '';
     renderFilter();
   });
   $('injuryChips').addEventListener('click', (ev) => {
@@ -140,13 +152,25 @@
   $('dClose').onclick = () => dlg.close();
   dlg.addEventListener('close', () => { stopDemo?.(); stopDemo = null; });
   dlg.addEventListener('click', (ev) => { if (ev.target === dlg) dlg.close(); });
+  $('concernNote').textContent = blurb.all;
   renderFilter();
 
-  /* ---------- the session strip: a picture of how a workout is paced ---------- */
-  const blocks = (n) => Array.from({ length: n }, (_, i) =>
-    `<i class="w" style="flex:60"></i>` + (i < n - 1 ? `<i class="r" style="flex:30"></i>` : '')).join('');
-  $('strip').innerHTML = [1, 2].map((r) =>
-    `<div class="rnd"><span class="rl">Round ${r}</span><div class="bar2">${blocks(6)}</div></div>`).join('');
+  /* ---------- exercise gallery: live demos, animated only while on screen ---------- */
+  const GALLERY = ['chin-tuck', 'wall-angel', 'glute-bridge', 'cat-cow', 'scapular-squeeze', 'chair-squat'];
+  $('gallery').innerHTML = GALLERY.map((id) => {
+    const e = ex(id);
+    return `<article class="card-ex" data-id="${id}">
+      <div class="grid-stage"><svg aria-hidden="true"></svg></div>
+      <div class="meta"><h3>${e.name}</h3><p>${e.why}</p><span class="tag">${LEVEL[e.level]} level</span></div></article>`;
+  }).join('');
+  document.querySelectorAll('#gallery .card-ex').forEach((card) => {
+    const e = ex(card.dataset.id), s = card.querySelector('svg');
+    let stop = null;
+    new IntersectionObserver(([en]) => {
+      if (en.isIntersecting && !stop) stop = Figure.play(s, e);
+      else if (!en.isIntersecting && stop) { stop(); stop = null; }
+    }).observe(card);
+  });
 
   /* ---------- floating button on small screens once the hero is gone ---------- */
   const sticky = $('stickyCta');
