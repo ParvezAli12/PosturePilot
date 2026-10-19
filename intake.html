@@ -4,68 +4,69 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Your details | PosturePilot</title>
+<script src="js/theme.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<script src="js/theme.js"></script>
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <div class="wrap">
-    <header class="topbar row" style="justify-content:space-between">
-    <a class="brand" href="index.html">Posture<span>Pilot</span></a>
+  <header class="topbar row" style="justify-content:space-between">
+    <a class="brand" href="index.html"><i aria-hidden="true"></i>Posture<span>Pilot</span></a>
     <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to dark mode">
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <defs>
-      <mask id="moonCut">
-        <rect width="24" height="24" fill="#fff"/>
-        <circle class="cut" cx="17" cy="8" r="6.5" fill="#000"/>
-      </mask>
-    </defs>
-    <g mask="url(#moonCut)"><circle class="core" cx="12" cy="12" r="5"/></g>
-    <g class="rays" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(0 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(45 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(90 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(135 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(180 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(225 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(270 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(315 12 12)"/>
-    </g>
-    <circle class="star s1" cx="19.5" cy="4.5" r="1"/>
-    <circle class="star s2" cx="21.5" cy="9.5" r=".7"/>
-  </svg>
-</button>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <defs>
+          <mask id="moonCut">
+            <rect width="24" height="24" fill="#fff"/>
+            <circle class="cut" cx="17" cy="8" r="6.5" fill="#000"/>
+          </mask>
+        </defs>
+        <g mask="url(#moonCut)"><circle class="core" cx="12" cy="12" r="5"/></g>
+        <g class="rays" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(0 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(45 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(90 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(135 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(180 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(225 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(270 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(315 12 12)"/>
+        </g>
+        <circle class="star s1" cx="19.5" cy="4.5" r="1"/>
+        <circle class="star s2" cx="21.5" cy="9.5" r=".7"/>
+      </svg>
+    </button>
   </header>
+
   <main>
     <div class="progress" aria-hidden="true"><i id="bar"></i></div>
     <form class="panel" id="form" novalidate>
 
       <section data-step="0">
-        <h2>About you</h2>
-        <p>We use these to pick a sensible intensity.</p>
+        <h2>Your build</h2>
+        <p>Age, height and weight set how hard your first sessions are.</p>
         <div class="field"><label for="age">Age (years)</label><input id="age" type="number" inputmode="numeric" min="10" max="90"></div>
         <div class="field"><label for="weight">Weight (kg)</label><input id="weight" type="number" inputmode="decimal" min="25" max="250"></div>
         <div class="field"><label for="height">Height (cm)</label><input id="height" type="number" inputmode="numeric" min="100" max="230"></div>
       </section>
 
       <section data-step="1" hidden>
-        <h2>What would you like to fix?</h2>
-        <p>Choose all that apply.</p>
-        <fieldset class="opts" id="concerns"><legend class="sr" style="position:absolute;left:-9999px">Posture concerns</legend></fieldset>
+        <h2>What is bothering you?</h2>
+        <p>Pick everything that applies.</p>
+        <fieldset class="opts" id="concerns"><legend style="position:absolute;left:-9999px">Posture concerns</legend></fieldset>
       </section>
 
       <section data-step="2" hidden>
-        <h2>Do you have any injuries?</h2>
-        <p>Pick every area that is injured or painful right now. Exercises that load those areas are removed from your plan. Leave all unticked if you have none.</p>
-        <fieldset class="opts" id="injuries"><legend class="sr" style="position:absolute;left:-9999px">Injured areas</legend></fieldset>
+        <h2>Anything injured right now?</h2>
+        <p>Tick every area that is hurt or recovering. Exercises that load those areas are removed from your plan. Leave everything unticked if nothing is.</p>
+        <fieldset class="opts" id="injuries"><legend style="position:absolute;left:-9999px">Injured areas</legend></fieldset>
       </section>
 
       <section data-step="3" hidden>
-        <h2>One last safety check</h2>
-        <p>Do any of these apply to you?</p>
-        <fieldset class="opts" id="flags"><legend class="sr" style="position:absolute;left:-9999px">Safety check</legend></fieldset>
+        <h2>Before we start</h2>
+        <p>Does any of this apply to you?</p>
+        <fieldset class="opts" id="flags"><legend style="position:absolute;left:-9999px">Safety check</legend></fieldset>
       </section>
 
       <p class="err" id="err" role="alert"></p>
@@ -76,8 +77,8 @@
     </form>
 
     <section class="panel stop" id="stop" hidden>
-      <h2>Please check with a professional first</h2>
-      <p>Because of what you selected, exercises from a website are not the right first step. A doctor or physiotherapist can find the cause and tell you what is safe for you.</p>
+      <h2>See a clinician first</h2>
+      <p>Based on your answers, exercises from a website are not the right first step. A doctor or physiotherapist can find the cause and tell you what is safe. PosturePilot will be here when you are cleared.</p>
       <a class="btn alt" href="index.html">Back to home</a>
     </section>
   </main>

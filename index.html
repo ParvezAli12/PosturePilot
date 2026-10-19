@@ -18,10 +18,10 @@
   <div class="wrap bar">
     <a class="brand" href="index.html"><i aria-hidden="true"></i>Posture<span>Pilot</span></a>
     <nav aria-label="Page sections">
-      <a href="#problems">Problems</a>
-      <a href="#filter">The filter</a>
+      <a href="#exercises">Exercises</a>
       <a href="#rules">Safety</a>
-      <a href="#faq">Questions</a>
+      <a href="#filter">Injury filter</a>
+      <a href="#faq">FAQ</a>
     </nav>
     <div class="right">
       <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to dark mode">
@@ -88,23 +88,36 @@
       <div><dd>~60 s</dd><dt>per exercise, with a rest between</dt></div>
     </dl>
 
-    <section class="block" id="problems">
+    <section class="block" id="exercises">
       <div class="head">
-        <h2>Start with what bothers you.</h2>
-        <p>Each problem has its own set of exercises. Pick the closest one now, then add others and mark any injuries on the next screen.</p>
+        <h2>Exercise library</h2>
+        <p>Each exercise has an animated demonstration. Here are a few; your plan picks the ones that suit you.</p>
       </div>
-      <ul class="index" id="concernIndex"></ul>
+      <div class="gallery" id="gallery"></div>
+    </section>
+
+    <section class="block" id="rules">
+      <div class="head">
+        <h2>Safety rules</h2>
+        <p>The plan is built from rules you can read. These three always apply.</p>
+      </div>
+      <dl class="rules">
+        <div><dt>Injured areas are excluded</dt><dd>Mark an injury and every exercise that loads that area is removed. If nothing safe is left for your problem, PosturePilot says so and points you to a clinician instead of guessing.</dd></div>
+        <div><dt>Pain adjusts the load</dt><dd>After each workout you rate your pain from 0 to 10. A rise shortens the next session. Several easy sessions in a row let it build slowly.</dd></div>
+        <div><dt>Warning signs stop the plan</dt><dd>Numbness or tingling, pain after an accident, recent surgery, chest pain, or severe pain at night end the questionnaire with advice to see a doctor or physiotherapist first.</dd></div>
+      </dl>
     </section>
 
     <section class="block" id="filter">
       <div class="head">
-        <h2>Tell it what hurts. Watch the list change.</h2>
-        <p>This is the same rule your real plan uses. Every exercise lists the body areas it loads, and a marked injury removes every exercise that touches that area.</p>
+        <h2>Injury filter</h2>
+        <p>Select a posture problem and mark any injuries. Exercises that load an injured area are removed from the list, exactly as in your real plan.</p>
       </div>
       <div class="bench">
         <div class="bench-ctl">
           <h3>Problem</h3>
           <div class="stack" id="concernTabs" role="group" aria-label="Posture problem"></div>
+          <p class="note" id="concernNote" style="margin:-10px 0 20px;min-height:2.8em"></p>
           <h3>Injured right now</h3>
           <div class="chipset" id="injuryChips" role="group" aria-label="Injured areas"></div>
         </div>
@@ -119,39 +132,10 @@
       </div>
     </section>
 
-    <section class="block" id="rules">
-      <div class="head">
-        <h2>Three rules it does not break.</h2>
-        <p>The plan is rules you can read, not a black box. Here is what it will always do.</p>
-      </div>
-      <dl class="rules">
-        <div><dt>A sore area is off limits.</dt><dd>Mark an injury and every exercise that loads that area is removed. If nothing safe is left for your problem, PosturePilot says so and points you to a clinician instead of guessing.</dd></div>
-        <div><dt>Pain steers the load.</dt><dd>After each workout you rate your pain from 0 to 10. A rise shortens the next session. Several easy sessions in a row let it build slowly.</dd></div>
-        <div><dt>Some answers stop the plan.</dt><dd>Numbness or tingling, pain after an accident, recent surgery, chest pain, or severe pain at night end the questionnaire with advice to see a doctor or physiotherapist first.</dd></div>
-      </dl>
-    </section>
-
-    <section class="block" id="session">
-      <div class="head">
-        <h2>A workout runs like a real session.</h2>
-        <p>Full-screen, timed and hands-free. You follow the cues; the next exercise starts on its own.</p>
-      </div>
-      <div class="strip">
-        <div id="strip"></div>
-        <div class="legend"><span>Exercise, about 60 s</span><span class="r">Rest, 30 s (you can change it)</span></div>
-      </div>
-      <ul class="how-list">
-        <li><b>Hold</b> means move into the position, stay still, and keep breathing until the timer says relax.</li>
-        <li><b>Two sides:</b> for one-sided moves the timer tells you when to switch.</li>
-        <li><b>Round two</b> starts automatically after the last exercise. Two rounds is roughly 18 minutes, one round about nine.</li>
-        <li><b>Pause, skip or add rest</b> at any point. Sound cues can be turned off.</li>
-      </ul>
-    </section>
-
     <section class="block" id="faq">
       <div class="head">
-        <h2>Straight answers.</h2>
-        <p>The short version of what people ask before they start.</p>
+        <h2>Frequently asked questions</h2>
+        <p>Short answers to what people ask before they start.</p>
       </div>
       <details><summary>Is this medical advice?</summary><p>No. It is general exercise guidance. See a doctor or physiotherapist for numbness, pain after an injury, or pain that does not settle.</p></details>
       <details><summary>How long does a workout take?</summary><p>With the default timings, two rounds of six exercises takes about 18 minutes, and one round about nine. You choose the timings before you start.</p></details>
@@ -160,7 +144,7 @@
     </section>
 
     <section class="final">
-      <h2>Build your plan in about a minute.</h2>
+      <h2>Build your plan</h2>
       <div class="row"><a class="btn go" href="intake.html">Build my plan</a></div>
     </section>
   </main>
