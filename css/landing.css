@@ -137,4 +137,16 @@ details p{margin:.7em 0 0;color:var(--slate)}
   .read li:nth-child(2){border-right:0}
   .read li:nth-child(-n+2){border-bottom:1px solid var(--line)}
 }
+
+/* exercise gallery */
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card-ex{border:1px solid var(--edge);border-radius:10px;background:var(--paper);overflow:hidden;display:flex;flex-direction:column}
+.card-ex .grid-stage{padding:8px 8px 0;border-bottom:1px solid var(--line)}
+.card-ex .meta{padding:14px 16px 16px;display:flex;flex-direction:column;gap:4px;flex:1}
+.card-ex h3{margin:0;font-size:1.1rem}
+.card-ex p{margin:0;font-size:.92rem;color:var(--slate)}
+.card-ex .tag{margin-top:auto;padding-top:8px;font:500 .78rem var(--font-mono);color:var(--link)}
+@media (max-width:900px){.gallery{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.gallery{grid-template-columns:1fr}}
+
 @media (min-width:901px){.sticky-cta{display:none!important}}
