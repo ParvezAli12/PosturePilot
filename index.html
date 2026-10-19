@@ -4,139 +4,164 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PosturePilot: posture exercises that work around your injuries</title>
-<meta name="description" content="A short daily routine with animated demos, matched to your age, body, posture problems and injuries.">
+<meta name="description" content="A timed daily posture routine built around your age, build and injuries. Exercises that would load a sore area never make the list.">
+<script src="js/theme.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@700;800&display=swap" rel="stylesheet">
-<script src="js/theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet" href="css/landing.css">
-
 </head>
 <body>
 
 <header class="site">
   <div class="wrap bar">
-    <a class="brand" href="index.html">Posture<span>Pilot</span></a>
+    <a class="brand" href="index.html"><i aria-hidden="true"></i>Posture<span>Pilot</span></a>
     <nav aria-label="Page sections">
       <a href="#problems">Problems</a>
-      <a href="#explore">Try it</a>
+      <a href="#filter">The filter</a>
+      <a href="#rules">Safety</a>
       <a href="#faq">Questions</a>
     </nav>
-        <div class="right">
+    <div class="right">
       <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to dark mode">
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <defs>
-      <mask id="moonCut">
-        <rect width="24" height="24" fill="#fff"/>
-        <circle class="cut" cx="17" cy="8" r="6.5" fill="#000"/>
-      </mask>
-    </defs>
-    <g mask="url(#moonCut)"><circle class="core" cx="12" cy="12" r="5"/></g>
-    <g class="rays" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(0 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(45 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(90 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(135 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(180 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(225 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(270 12 12)"/>
-      <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(315 12 12)"/>
-    </g>
-    <circle class="star s1" cx="19.5" cy="4.5" r="1"/>
-    <circle class="star s2" cx="21.5" cy="9.5" r=".7"/>
-  </svg>
-</button>
-      <a class="btn alt small" href="intake.html">Build my plan</a>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <defs>
+            <mask id="moonCut">
+              <rect width="24" height="24" fill="#fff"/>
+              <circle class="cut" cx="17" cy="8" r="6.5" fill="#000"/>
+            </mask>
+          </defs>
+          <g mask="url(#moonCut)"><circle class="core" cx="12" cy="12" r="5"/></g>
+          <g class="rays" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(0 12 12)"/>
+            <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(45 12 12)"/>
+            <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(90 12 12)"/>
+            <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(135 12 12)"/>
+            <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(180 12 12)"/>
+            <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(225 12 12)"/>
+            <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(270 12 12)"/>
+            <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(315 12 12)"/>
+          </g>
+          <circle class="star s1" cx="19.5" cy="4.5" r="1"/>
+          <circle class="star s2" cx="21.5" cy="9.5" r=".7"/>
+        </svg>
+      </button>
+      <a class="btn go small" href="intake.html">Build my plan</a>
     </div>
   </div>
-  <div class="scroll" id="scroll" aria-hidden="true"></div>
 </header>
 
 <div class="wrap">
   <main>
+
     <section class="hero2" id="top">
       <div>
-        <h1>Posture exercises that work around your injuries.</h1>
-        <p class="lead">Tell PosturePilot your age, height, weight and where it hurts. You get a short daily routine with animated demos, and nothing that loads an injured area.</p>
+        <h1>Straighten up without aggravating anything.</h1>
+        <p class="lead">Give PosturePilot your age, height, weight and any injuries. It builds a timed daily routine around them, and an exercise that would load a sore area never makes the list.</p>
         <div class="row">
           <a class="btn go" href="intake.html">Build my plan</a>
-          <a class="btn alt" href="#explore">Try it now</a>
+          <a class="btn alt" href="#filter">Try the filter</a>
         </div>
-        <p class="note" style="margin-top:14px">Free. No account. Your answers stay in your browser.</p>
+        <p class="fine">Free. No account. Your answers stay on this device.</p>
       </div>
 
       <div class="stage2">
-        <svg id="hero" aria-hidden="true"></svg>
-        <div class="caption" id="heroCap" aria-live="polite"></div>
+        <div class="grid-stage"><svg id="hero" role="img" aria-label="A figure moving from a slouch to standing in line with a vertical plumb line"></svg></div>
+        <ul class="read" id="read" aria-live="polite"></ul>
         <div class="slider">
           <label for="posture">Drag to change the posture</label>
           <input id="posture" type="range" min="0" max="100" value="0">
           <div class="ends">
             <button type="button" class="link" id="toSlouch">Slouched</button>
-            <button type="button" class="link" id="toUpright">Upright</button>
+            <button type="button" class="link" id="toUpright">Aligned</button>
+          </div>
+        </div>
+        <div class="fig"><span>Fig. 1</span><span id="heroCap">Posture is judged against a vertical line through ear, shoulder, hip and knee.</span></div>
+      </div>
+    </section>
+
+    <dl class="spec" aria-label="What is inside">
+      <div><dd id="nEx">0</dd><dt>exercises, each with an animation</dt></div>
+      <div><dd id="nCon">0</dd><dt>posture problems covered</dt></div>
+      <div><dd id="nInj">0</dd><dt>injury areas it can work around</dt></div>
+      <div><dd>~60 s</dd><dt>per exercise, with a rest between</dt></div>
+    </dl>
+
+    <section class="block" id="problems">
+      <div class="head">
+        <h2>Start with what bothers you.</h2>
+        <p>Each problem has its own set of exercises. Pick the closest one now, then add others and mark any injuries on the next screen.</p>
+      </div>
+      <ul class="index" id="concernIndex"></ul>
+    </section>
+
+    <section class="block" id="filter">
+      <div class="head">
+        <h2>Tell it what hurts. Watch the list change.</h2>
+        <p>This is the same rule your real plan uses. Every exercise lists the body areas it loads, and a marked injury removes every exercise that touches that area.</p>
+      </div>
+      <div class="bench">
+        <div class="bench-ctl">
+          <h3>Problem</h3>
+          <div class="stack" id="concernTabs" role="group" aria-label="Posture problem"></div>
+          <h3>Injured right now</h3>
+          <div class="chipset" id="injuryChips" role="group" aria-label="Injured areas"></div>
+        </div>
+        <div class="bench-out">
+          <p class="count" id="count" aria-live="polite"></p>
+          <ul class="rows" id="xgrid"></ul>
+          <div class="row">
+            <a class="btn go" id="xCta" href="intake.html">Build a plan with these answers</a>
+            <span class="note">Select an exercise to see how it is done.</span>
           </div>
         </div>
       </div>
     </section>
 
-    <ul class="stats" aria-label="What is inside">
-      <li><b id="nEx">0</b>exercises</li>
-      <li><b id="nCon">0</b>posture problems</li>
-      <li><b id="nInj">0</b>injury areas handled</li>
-    </ul>
-
-    <section class="block" id="problems">
-      <h2>Pick the problem you want to fix</h2>
-      <p class="lede">Choose one to start. You can add more and mark any injuries on the next screen.</p>
-      <div class="cards" id="concernCards"></div>
+    <section class="block" id="rules">
+      <div class="head">
+        <h2>Three rules it does not break.</h2>
+        <p>The plan is rules you can read, not a black box. Here is what it will always do.</p>
+      </div>
+      <dl class="rules">
+        <div><dt>A sore area is off limits.</dt><dd>Mark an injury and every exercise that loads that area is removed. If nothing safe is left for your problem, PosturePilot says so and points you to a clinician instead of guessing.</dd></div>
+        <div><dt>Pain steers the load.</dt><dd>After each workout you rate your pain from 0 to 10. A rise shortens the next session. Several easy sessions in a row let it build slowly.</dd></div>
+        <div><dt>Some answers stop the plan.</dt><dd>Numbness or tingling, pain after an accident, recent surgery, chest pain, or severe pain at night end the questionnaire with advice to see a doctor or physiotherapist first.</dd></div>
+      </dl>
     </section>
 
-    <section class="block" id="explore">
-      <h2>Try it: pick a problem, mark an injury</h2>
-      <p class="lede">This is the same filter your plan uses. Tick an injured area and watch the exercises that would load it drop out.</p>
-
-      <div class="explorer">
-        <div class="ctl">
-          <h3>Problem</h3>
-          <div class="chipset" id="concernTabs" role="group" aria-label="Posture problem"></div>
-        </div>
-        <div class="ctl">
-          <h3>Anywhere injured right now?</h3>
-          <div class="chipset" id="injuryChips" role="group" aria-label="Injured areas"></div>
-        </div>
-
-        <p class="count" id="count" aria-live="polite"></p>
-        <div class="xgrid" id="xgrid"></div>
-
-        <div class="row" style="margin-top:18px">
-          <a class="btn go" id="xCta" href="intake.html">Build a plan with these answers</a>
-          <span class="note">Tap an exercise to see the animation.</span>
-        </div>
+    <section class="block" id="session">
+      <div class="head">
+        <h2>A workout runs like a real session.</h2>
+        <p>Full-screen, timed and hands-free. You follow the cues; the next exercise starts on its own.</p>
       </div>
-    </section>
-
-    <section class="block">
-      <h2>Built around your body</h2>
-      <div class="three">
-        <div><h3>Matched to you</h3><p>Age, height and weight set how many reps and how long the holds are, so a first session is not too much.</p></div>
-        <div><h3>Injury-aware</h3><p>Every exercise is tagged with the areas it loads. If nothing safe is left for a problem, PosturePilot says so and suggests seeing a doctor or physiotherapist.</p></div>
-        <div><h3>Easy to follow</h3><p>Each exercise has an animated demo, step-by-step cues, a rep counter and a hold timer.</p></div>
+      <div class="strip">
+        <div id="strip"></div>
+        <div class="legend"><span>Exercise, about 60 s</span><span class="r">Rest, 30 s (you can change it)</span></div>
       </div>
+      <ul class="how-list">
+        <li><b>Hold</b> means move into the position, stay still, and keep breathing until the timer says relax.</li>
+        <li><b>Two sides:</b> for one-sided moves the timer tells you when to switch.</li>
+        <li><b>Round two</b> starts automatically after the last exercise. Two rounds is roughly 18 minutes, one round about nine.</li>
+        <li><b>Pause, skip or add rest</b> at any point. Sound cues can be turned off.</li>
+      </ul>
     </section>
 
     <section class="block" id="faq">
-      <h2>Questions</h2>
-      <details><summary>Is this medical advice?</summary><p>No. PosturePilot gives general exercise guidance. See a doctor or physiotherapist for persistent or severe pain, numbness, or pain after an injury.</p></details>
-      <details><summary>How long is a session?</summary><p>Usually around 10 to 15 minutes. Your plan page shows the estimate for your routine.</p></details>
-      <details><summary>What do I need?</summary><p>A wall, a sturdy chair and a doorway. A mat is helpful for the floor exercises.</p></details>
-      <details><summary>Do I need an account?</summary><p>No. Your answers and completed sessions are saved only in your own browser.</p></details>
+      <div class="head">
+        <h2>Straight answers.</h2>
+        <p>The short version of what people ask before they start.</p>
+      </div>
+      <details><summary>Is this medical advice?</summary><p>No. It is general exercise guidance. See a doctor or physiotherapist for numbness, pain after an injury, or pain that does not settle.</p></details>
+      <details><summary>How long does a workout take?</summary><p>With the default timings, two rounds of six exercises takes about 18 minutes, and one round about nine. You choose the timings before you start.</p></details>
+      <details><summary>What do I need?</summary><p>A wall, a sturdy chair, a doorway and a little floor space. A mat helps for the floor exercises.</p></details>
+      <details><summary>Where is my data kept?</summary><p>On this device only, in your browser's storage. Clearing site data removes your plan and history.</p></details>
     </section>
 
     <section class="final">
-      <h2>Ready when you are</h2>
-      <p>It takes about a minute to answer the questions.</p>
-      <a class="btn go" href="intake.html">Build my plan</a>
+      <h2>Build your plan in about a minute.</h2>
+      <div class="row"><a class="btn go" href="intake.html">Build my plan</a></div>
     </section>
   </main>
 
@@ -159,10 +184,10 @@
   </div>
 </dialog>
 
+<script src="js/storage.js"></script>
 <script src="js/exercises.js"></script>
 <script src="js/figure.js"></script>
 <script src="js/home.js"></script>
-<script src="js/storage.js"></script>
 <script src="js/returning.js"></script>
 </body>
 </html>
