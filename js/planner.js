@@ -70,13 +70,16 @@ const Planner = {
         notes.push(`No safe exercises are available for "${label}" with your injuries or paused exercises. Please see a doctor or physiotherapist for this area.`);
         continue;
       }
-      safe.sort((x, y) => x.level - y.level || y.concerns.length - x.concerns.length)
-          .slice(0, perConcern)
-          .forEach((e) => {
-            const entry = chosen.get(e.id) || { e, for: new Set() };
-            entry.for.add(c);
-            chosen.set(e.id, entry);
-          });
+      /* A balanced routine: the best warm-up, the best stretch and the best strength move first,
+         then the next easiest exercises if there is room. */
+      const rank = (x, y) => x.level - y.level || y.concerns.length - x.concerns.length || x.id.localeCompare(y.id);
+      const picks = [1, 2, 3].map((ph) => safe.filter((e) => e.phase === ph).sort(rank)[0]).filter(Boolean);
+      for (const e of [...safe].sort(rank)) { if (picks.length >= perConcern) break; if (!picks.includes(e)) picks.push(e); }
+      picks.slice(0, perConcern).forEach((e) => {
+        const entry = chosen.get(e.id) || { e, for: new Set() };
+        entry.for.add(c);
+        chosen.set(e.id, entry);
+      });
     }
     if (blocked.size) notes.push('Exercises that load your injured area were left out of this plan.');
     if (banned.size) notes.push(`${banned.size} exercise${banned.size > 1 ? 's are' : ' is'} paused because you said ${banned.size > 1 ? 'they' : 'it'} hurt. You can restore ${banned.size > 1 ? 'them' : 'it'} under Progress.`);
