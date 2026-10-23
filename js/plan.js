@@ -5,7 +5,7 @@
 
   const byId = (id) => EXERCISES.find((e) => e.id === id);
   const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
-  const today = () => new Date().toISOString().slice(0, 10);
+    const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
   const nice = (iso) => new Date(iso + 'T00:00:00').toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
   const round5 = (v) => Math.round(v / 5) * 5;
   const dur = (s) => (s % 60 === 0 ? `${s / 60} min` : `${s} s`);
