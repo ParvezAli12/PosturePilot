@@ -11,6 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet" href="css/landing.css">
+<link rel="stylesheet" href="css/extras.css">
 </head>
 <body>
 
@@ -19,6 +20,7 @@
     <a class="brand" href="index.html"><i aria-hidden="true"></i>Posture<span>Pilot</span></a>
     <nav aria-label="Page sections">
       <a href="#exercises">Exercises</a>
+      <a href="#desk">Desk break</a>
       <a href="#rules">Safety</a>
       <a href="#filter">Injury filter</a>
       <a href="#faq">FAQ</a>
@@ -63,7 +65,7 @@
           <a class="btn go" href="intake.html">Build my plan</a>
           <a class="btn alt" href="#filter">Try the filter</a>
         </div>
-        <p class="fine">Free. No account. Your answers stay on this device.</p>
+        <p class="fine">Free. No account. Your answers stay on this device. <a href="desk.html">Short on time? Try a two-minute desk break.</a></p>
       </div>
 
       <div class="stage2">
@@ -94,6 +96,28 @@
         <p>Each exercise has an animated demonstration. Here are a few; your plan picks the ones that suit you.</p>
       </div>
       <div class="gallery" id="gallery"></div>
+    </section>
+
+        <section class="block" id="desk">
+      <div class="head">
+        <h2>Two-minute desk break</h2>
+        <p>Sitting for a while? Six short moves for your neck, shoulders, back and legs. Mostly done from your chair, with no equipment.</p>
+      </div>
+      <div class="deskband">
+        <ol class="deskmoves">
+          <li><b>Seated chin tuck</b><span>Brings a forward head back over the shoulders</span></li>
+          <li><b>Seated shoulder rolls</b><span>Loosens shoulders that creep up</span></li>
+          <li><b>Seated upper back extension</b><span>Opens a rounded upper back</span></li>
+          <li><b>Seated overhead reach</b><span>Stretches the chest and sides</span></li>
+          <li><b>Seated leg extensions</b><span>Wakes up legs that have been still</span></li>
+          <li><b>Stand up and march</b><span>Gets you out of the chair</span></li>
+        </ol>
+        <div class="row">
+          <a class="btn go" href="desk.html">Start desk break</a>
+          <a class="btn alt" href="reminders.html">Set reminders</a>
+        </div>
+        <p class="note" style="margin:14px 0 0">Moves that use an area you mark as injured are left out automatically.</p>
+      </div>
     </section>
 
     <section class="block" id="rules">
@@ -139,8 +163,9 @@
       </div>
       <details><summary>Is this medical advice?</summary><p>No. It is general exercise guidance. See a doctor or physiotherapist for numbness, pain after an injury, or pain that does not settle.</p></details>
       <details><summary>How long does a workout take?</summary><p>With the default timings, two rounds of six exercises takes about 18 minutes, and one round about nine. You choose the timings before you start.</p></details>
-      <details><summary>What do I need?</summary><p>A wall, a sturdy chair, a doorway and a little floor space. A mat helps for the floor exercises.</p></details>
+      <details><summary>What do I need?</summary><p>A wall, a sturdy chair, a doorway and a little floor space. A mat helps for the floor exercises.</p></details>      
       <details><summary>Where is my data kept?</summary><p>On this device only, in your browser's storage. Clearing site data removes your plan and history.</p></details>
+      <details><summary>Can it remind me?</summary><p>Yes. Pick a time on the Reminders page. While the site is open you get a reminder at that time. To be reminded even when the site is closed, add it to your phone's calendar from the same page.</p></details>
     </section>
 
     <section class="final">
@@ -173,5 +198,8 @@
 <script src="js/figure.js"></script>
 <script src="js/home.js"></script>
 <script src="js/returning.js"></script>
+<script src="js/plan.js"></script>
+<script src="js/progress.js"></script>
+<script src="js/notify.js"></script>
 </body>
 </html>
