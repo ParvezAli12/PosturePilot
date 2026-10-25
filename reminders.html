@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reminders | PosturePilot</title>
+<script src="js/theme.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/landing.css">
+<link rel="stylesheet" href="css/extras.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="topbar row" style="justify-content:space-between">
+    <a class="brand" href="index.html"><i aria-hidden="true"></i>Posture<span>Pilot</span></a>
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to dark mode">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <defs>
+          <mask id="moonCut">
+            <rect width="24" height="24" fill="#fff"/>
+            <circle class="cut" cx="17" cy="8" r="6.5" fill="#000"/>
+          </mask>
+        </defs>
+        <g mask="url(#moonCut)"><circle class="core" cx="12" cy="12" r="5"/></g>
+        <g class="rays" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(0 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(45 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(90 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(135 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(180 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(225 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(270 12 12)"/>
+          <line x1="12" y1="1.8" x2="12" y2="4" transform="rotate(315 12 12)"/>
+        </g>
+        <circle class="star s1" cx="19.5" cy="4.5" r="1"/>
+        <circle class="star s2" cx="21.5" cy="9.5" r=".7"/>
+      </svg>
+    </button>
+  </header>
+
+  <main>
+    <h1 style="font-size:clamp(2rem,5vw,3rem)">Reminders</h1>
+    <p class="lead2">Choose when PosturePilot should nudge you. Changes save automatically.</p>
+
+    <ul class="how-rem">
+      <li><b>While the site is open</b> (in any tab, or installed as an app) you get a reminder at the chosen time. Allow notifications to also get a pop-up when the tab is in the background.</li>
+      <li><b>If you open the site later</b> and have missed your workout time, you get one reminder that day.</li>
+      <li><b>To be reminded even when the site is closed</b>, add the reminder to your calendar. A website cannot wake itself up on its own, but your phone's calendar can.</li>
+    </ul>
+
+    <section class="panel">
+      <h2 style="font-size:1.3rem">Pop-up notifications</h2>
+      <div class="perm">
+        <button type="button" class="btn alt" id="permBtn">Allow notifications</button>
+        <button type="button" class="btn alt" id="testBtn">Send a test</button>
+      </div>
+      <p class="rem-status" id="permState" role="status"></p>
+    </section>
+
+    <div class="remind-grid">
+      <section class="panel" id="wPanel">
+        <div class="rem-head"><h2>Daily workout</h2><label class="switch"><input type="checkbox" id="wOn"> On</label></div>
+        <p class="note" style="margin:0">One reminder at your chosen time on the days you pick. It is skipped once you have trained that day.</p>
+        <div class="rem-row"><label>Time<input type="time" id="wTime" value="18:00"></label></div>
+        <div class="days" id="wDays" role="group" aria-label="Workout days"></div>
+        <div class="row" style="margin-top:16px"><button type="button" class="btn alt" id="wIcs">Add to calendar</button></div>
+        <p class="rem-status" id="wMsg" role="status"></p>
+      </section>
+
+      <section class="panel" id="dPanel">
+        <div class="rem-head"><h2>Desk breaks</h2><label class="switch"><input type="checkbox" id="dOn"> On</label></div>
+        <p class="note" style="margin:0">A nudge to stand up and do the two-minute desk break, spread through your working day.</p>
+        <div class="rem-row">
+          <label>From<input type="time" id="dStart" value="10:00"></label>
+          <label>Until<input type="time" id="dEnd" value="16:00"></label>
+          <label>Every
+            <select id="dEvery">
+              <option value="30">30 minutes</option><option value="45">45 minutes</option><option value="60" selected>1 hour</option>
+              <option value="90">90 minutes</option><option value="120">2 hours</option>
+            </select>
+          </label>
+        </div>
+        <div class="days" id="dDays" role="group" aria-label="Desk break days"></div>
+        <p class="rem-note" id="dTimes"></p>
+        <div class="row" style="margin-top:16px"><button type="button" class="btn alt" id="dIcs">Add to calendar</button></div>
+        <p class="rem-status" id="dMsg" role="status"></p>
+      </section>
+    </div>
+
+    <p class="note" style="margin-top:22px">Calendar files use this website's address, so add them from your published site, not from a file on your computer.</p>
+  </main>
+  <footer>PosturePilot gives general exercise guidance and is not medical advice.</footer>
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/notify.js"></script>
+<script src="js/reminders.js"></script>
+</body>
+</html>
