@@ -1,0 +1,31 @@
+/* ---------- desk break + reminders + landing band ---------- */
+.lead2{font-size:1.1rem;color:var(--slate);max-width:56ch}
+.dk-list{list-style:none;margin:16px 0 18px;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0 24px}
+.dk-list li{border-top:1px solid var(--line);padding:10px 0;display:flex;justify-content:space-between;gap:12px}
+.dk-list span{font:400 .85rem var(--font-mono);color:var(--slate);white-space:nowrap}
+.wo-next{margin:0;font:500 .85rem var(--font-mono);color:var(--slate)}
+
+.deskband{border:1px solid var(--edge);border-radius:10px;background:var(--paper);padding:22px}
+.deskmoves{list-style:none;margin:0 0 18px;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:0 28px}
+.deskmoves li{border-top:1px solid var(--line);padding:10px 0;display:flex;flex-direction:column;gap:2px}
+.deskmoves b{font-family:var(--font-head)}
+.deskmoves span{font-size:.9rem;color:var(--slate)}
+
+.remind-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
+.remind-grid .panel{margin:0}
+.rem-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:6px}
+.rem-head h2{margin:0;font-size:1.4rem}
+.switch{display:inline-flex;align-items:center;gap:8px;font-weight:600;cursor:pointer}
+.switch input{width:20px;height:20px;accent-color:var(--teal)}
+.rem-row{display:flex;flex-wrap:wrap;gap:14px 22px;margin:14px 0}
+.rem-row label{display:flex;flex-direction:column;gap:4px;font-size:.9rem}
+input[type=time],select{font:inherit;font-family:var(--font-mono);color:var(--ink);padding:.55em .7em;border:1.5px solid var(--edge);border-radius:6px;background:var(--card2)}
+input[type=time]:focus,select:focus{border-color:var(--teal);outline:none}
+.days{display:flex;flex-wrap:wrap;gap:6px}
+.days .chip{padding:.35em .7em;font-size:.85rem}
+.rem-note{font:400 .85rem var(--font-mono);color:var(--slate);margin:6px 0 0}
+.rem-status{font-weight:600;min-height:1.5em;margin:10px 0 0}
+.perm{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.how-rem{margin:0 0 20px;padding-left:1.1em}
+.how-rem li{margin-bottom:.5em;color:var(--slate)}
+.how-rem b{color:var(--ink)}
