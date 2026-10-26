@@ -1,125 +1,168 @@
 # PosturePilot
 
-A web app that builds a short, safe daily posture-correction routine for each user, based on their
-age, height, weight, posture problems and injuries, and then adapts the routine from the user's own
-pain feedback.
+**A posture routine that works around your injuries.** PosturePilot builds a timed daily exercise plan from your age, build, posture problems and injuries, adapts it from your own pain ratings, and guides you through it on a full-screen workout timer.
 
-## 1. Problem
+**Live site:** https://YOUR-USERNAME.github.io/posture-pilot/
 
-Many students and desk workers develop posture-related discomfort: forward head, rounded or uneven
-shoulders, upper and lower back pain. Generic exercise videos and lists are easy to find but have
-three weaknesses:
+![PosturePilot landing page](docs/screenshots/01-landing.png)
 
-1. **They ignore the person.** The same routine is given to a teenager and a 65-year-old.
-2. **They ignore injuries.** Someone with a knee problem is told to do squats.
-3. **They never learn.** Nothing changes if the exercises cause pain, or if they are too easy.
+<!-- Optional: add one or two cited sources on how common neck and back pain are among students and desk workers. -->
 
-PosturePilot addresses these three gaps.
+## The problem
 
-> Background: add 2 or 3 cited sources here on how common neck and back pain are among students
-> and desk workers in Pakistan or worldwide (for example WHO or peer-reviewed prevalence studies).
+People who sit for long hours often end up with a stiff neck, rounded shoulders or an aching lower back. Free exercise videos and lists are easy to find, but they have three weaknesses:
 
-## 2. Objectives
+1. **They ignore the person.** The same routine is given to a teenager and to a 65-year-old.
+2. **They ignore injuries.** Someone with a sore knee is told to do squats.
+3. **They never adapt.** Nothing changes if an exercise hurts or if the routine has become too easy.
 
-- Choose exercises that match the user's concerns, age and body size.
-- **Never** include an exercise that loads an area the user has marked as injured.
-- Explain every choice in plain language.
-- Adjust the amount of exercise using the user's own pain ratings.
-- Stop and refer to a professional when warning signs appear.
+PosturePilot addresses these three gaps with a small set of readable rules rather than a black box.
 
-## 3. How it works
+## Who it is for
 
-```
-Landing page ──► Intake form ──► Safety screen ──► Plan generator ──► Session player ──► Pain check-in
-                 age, height,     red-flag         (rules below)      animated demo,        │
-                 weight,          questions                           rep counter,          │
-                 concerns,        (stop if any)                       hold timer            │
-                 injuries                                                                   │
-                                                  ◄──────── adapts next plan ◄──────────────┘
-```
+Students and desk workers with everyday posture aches who want a short, safe routine. It is **not** a diagnosis tool and not for pain that follows an injury or needs a clinician (see [Limitations](#limitations)).
 
-**Data model.** Each exercise is a record in `js/exercises.js`: which problems it helps (`concerns`),
-which body areas it puts load on (`loads`), difficulty level, phase (warm-up, stretch, strength),
-sets, reps or hold time, steps, cues and its animation poses. Each injury option lists the areas it
-blocks. Adding an exercise means adding one record, with no code changes.
+## What it does
 
-### Selection rules (`js/planner.js`)
+| Feature | What you get |
+|---|---|
+| **Personal plan** | Answer four short steps (build, problems, injuries, safety check) and get a routine of 4 to 8 exercises, each with an animated demo and a "why this exercise" explanation. |
+| **Injury filter** | Mark an injured area and every exercise that loads it disappears from your plan. |
+| **Pain-aware** | After each workout you rate your pain. The next plan gets lighter, stays the same or builds up slowly. |
+| **Guided workout** | A full-screen, timed session with sound cues. It starts each exercise and rest by itself. |
+| **Desk break** | A two-minute routine, mostly done from a chair, that you can start from the landing page. |
+| **Reminders** | Pick a time for a daily workout or for desk breaks through the day. |
+| **Progress** | Streaks, a five-week calendar, a pain trend, and backup and restore of your data. |
+| **Saved on your device** | Your plan comes back every time you open the site. No account is needed. |
 
-| # | Rule |
-|---|------|
-| S1 | Remove any exercise whose `loads` overlap an injured area. |
-| S2 | Remove exercises the user has paused because they hurt. |
-| S3 | For age 65+ or BMI 35+, allow only levels 1 and 2. |
-| S4 | For age 60+, under 16, or BMI 30+, use 75% of the standard reps and holds, and fewer exercises per problem. |
-| S5 | For each selected problem, take the gentlest, most broadly useful safe exercises, ordered warm-up, stretch, strength. |
-| S6 | If nothing safe remains for a problem, say so and refer the user to a doctor or physiotherapist. |
+![The injury filter with a knee injury selected](docs/screenshots/02-injury-filter.png)
 
-### Adaptation rules (pain check-in after each session, 0 to 10)
+## How it works
 
-| # | Trigger | Effect |
-|---|---------|--------|
-| R1 | Last pain 8 or higher | Load cut to 50%. Advise stopping and seeing a professional. |
-| R2 | Last pain 6 or higher, or a rise of 2+ that reaches at least 4 | Load cut to 75%. |
-| R3 | Last 3, 6 or 9 sessions all at pain 3 or lower | Load up 10%, 20% or 30% (cap). |
-| R4 | The user marks an exercise as hurting | It is removed until the user restores it. |
+### The injury filter
 
-### Safety screen
+The library has **30 exercises**. Each one records the body areas it puts load on (`loads`), such as `knee`, `shoulder` or `lower-back`. Each injury option records the areas it blocks. Building a plan is then a simple rule:
 
-Before any plan is built the user is asked about numbness or tingling, pain after an accident,
-recent surgery or fracture, chest pain or dizziness, and severe night pain. A yes to any of them stops
-the process and recommends seeing a professional.
+> Remove any exercise whose `loads` overlap an injured area.
 
-## 4. Testing
+Examples: a knee injury removes the wall sit and marching in place; a leg injury also removes hip and ankle exercises. If nothing safe is left for a problem you selected, the plan says so and points you to a doctor or physiotherapist instead of guessing.
 
-`node tests/planner.test.js` runs 27 automated checks with no dependencies:
+Other rules in the plan builder:
 
-- **Data integrity:** every exercise has the required fields, ids are unique, and every loaded
-  body area can be blocked by some injury option.
-- **Safety:** a leg injury removes all leg exercises, a shoulder injury removes shoulder
-  exercises, and an exhaustive check over 21,504 generated plans (every combination of injuries,
-  problems, ages and weights) confirms none contains an exercise that loads an injured area.
-- **Personalisation:** older users get reduced amounts, hard exercises are excluded for high-risk
-  profiles, doses are never zero, and every item has an explanation.
-- **Adaptation:** each of R1 to R4 is tested, including the +30% cap and a pain spike resetting the
-  low-pain run.
+- Age 65 or over, or a BMI of 35 or more: only the gentler exercises (levels 1 and 2).
+- Age 60 or over, under 16, or a BMI of 30 or more: about 25% shorter holds and workouts, and fewer exercises per problem.
+- Each problem gets a balanced mix: the best warm-up, the best stretch and the best strength move.
 
-## 5. Limitations
+### Safety check
 
-- PosturePilot gives general exercise guidance. It does not diagnose, treat or replace a doctor
-  or physiotherapist.
-- Pain ratings are self-reported. The rules are deliberately conservative but have not been
-  clinically validated.
-- Animations are side-view stick figures. Exercises needing a front view (side bends, lateral
-  raises) are not included yet.
-- Data is stored only in the user's browser (`localStorage`). Clearing site data erases history.
-- The exercise library is a starter set and should be reviewed by a qualified physiotherapist
-  before public release.
+Before any plan is built the form asks about numbness or tingling, pain after an accident, recent surgery or a healing fracture, chest pain or dizziness, and severe pain at night. A "yes" to any of them stops the process and recommends seeing a clinician first.
 
-## 6. Evaluation plan
+### Pain rules
 
-1. Have a physiotherapist review the exercise library, injury tags and safety questions.
-2. Run a small usability trial (5 to 10 participants). Measure the time to get a plan, whether people
-   understood the "why this exercise" notes, and whether any plan felt unsuitable.
-3. Optionally collect before and after pain ratings over two weeks from willing volunteers.
+After each workout you rate your pain from 0 to 10 and can mark any exercise that hurt.
 
-(Record the results in this section once the trial is done.)
+| Rule | Trigger | Effect on the next plan |
+|---|---|---|
+| R1 | Last pain 8 or higher | Load cut to 50%, with advice to stop and see a professional |
+| R2 | Last pain 6 or higher, or a rise of 2 or more that reaches at least 4 | Load cut to 75% |
+| R3 | Last 3, 6 or 9 sessions all at pain 3 or lower | Load up 10%, 20% or 30% (the maximum) |
+| R4 | An exercise marked "this hurt" | Paused until you restore it |
 
-## 7. Future work
+The rules are written in `js/planner.js` so they can be read, reviewed and tested.
 
-- Front-view animations and more exercises (neck, wrist, hip flexor).
-- Desk-break reminders every 45 minutes with a one-minute routine.
-- A guided posture self-check (wall test, mirror test) to suggest problems.
-- Optional accounts so progress syncs across devices.
-- Urdu language support.
+### Guided workout
 
-## 8. Run it
+![The full-screen workout](docs/screenshots/03-workout.png)
 
-Open `index.html` in a browser. No build step and no dependencies.
+The workout opens on its own screen with everything visible, so there is no scrolling mid-exercise. By default each exercise runs about **a minute** with a **30-second rest**, then the next exercise starts automatically. After the last one it begins round two. You can change the exercise time (30 to 90 seconds), the rest (15 to 60 seconds) and the number of rounds (1 to 3) before starting.
+
+The screen coaches you through each exercise: it says **Hold** or **Relax** and counts the seconds, tells you when to **switch sides**, and beeps at transitions. You can pause, skip or add 15 seconds of rest, and the screen stays awake on supported phones.
+
+### Desk break
+
+![The desk break](docs/screenshots/04-desk-break.png)
+
+Six moves of about 20 seconds each, about two minutes in total: seated chin tuck, shoulder rolls, upper back extension, overhead reach, leg extensions, then standing up to march. Moves that use an area you marked as injured are left out, and the rest get a little longer so the break still takes about two minutes.
+
+### Reminders
+
+A website cannot wake itself up when it is closed, and PosturePilot does not pretend otherwise. Reminders work in three ways:
+
+- **While the site is open:** an on-page card, or a pop-up notification if the tab is in the background and you allowed notifications.
+- **When you come back late:** one catch-up reminder if your workout time has passed and you have not trained.
+- **When the site is closed:** the Reminders page creates a calendar file (`.ics`) for your workout or for desk breaks through the day. Your phone's calendar then does the reminding.
+
+### Saved data
+
+Everything is stored in your browser (`localStorage`). Nothing is sent to a server. The Progress panel has **Download backup** and **Restore from file** so you do not lose your history if you clear site data or change phones.
+
+## Design decisions
+
+- **Rules, not machine learning.** Safety advice has to be explainable, so every choice the plan makes can be traced to a rule you can read. The plan page shows the reasons for each exercise.
+- **The plumb line.** Posture is judged against a vertical line through the ear, shoulder, hip and knee. The landing page's slider uses exactly that line, and the logo is the same mark.
+- **Animation without video.** The demos are drawn by a small SVG engine. Each pose is a set of joint angles and every bone has a fixed length, so limbs cannot stretch or detach. The figure rests on the floor in every frame.
+- **Privacy by default.** No accounts, no tracking, and no server for your data.
+- **Light and dark themes**, switched with a sun and moon button, and the system's "reduce motion" setting is respected.
+
+## Tech and structure
+
+Plain HTML, CSS and JavaScript. No framework and no build step. Open `index.html` in a browser.
 
 ```
-posture-pilot/
-  index.html, intake.html, plan.html
-  css/   styles.css, landing.css
-  js/    exercises.js  planner.js  figure.js  intake.js  plan.js  home.js  storage.js  theme.js
-  tests/ planner.test.js
+index.html     landing page
+intake.html    four-step questionnaire
+plan.html      saved plan, guided workout, progress
+desk.html      two-minute desk break
+reminders.html reminder settings
+css/           styles, landing, workout, extras
+js/
+  exercises.js   the exercise library, problems, injuries, safety questions
+  planner.js     plan builder: injury filter, intensity rules, pain rules
+  figure.js      stick-figure animation engine
+  plan.js        plan page and the guided workout
+  workout-data.js timing details for each exercise
+  progress.js    streaks, calendar, backup and restore
+  desk-data.js, desk.js   the desk break
+  notify.js, reminders.js reminders and calendar files
+  home.js, intake.js, returning.js, storage.js, theme.js
+reminder-sw.js   tiny service worker so notifications work on phones
 ```
+
+Fonts are Archivo, Public Sans and IBM Plex Mono, all under the SIL Open Font License.
+
+## Testing
+
+The plan builder and the animation geometry have automated checks that run with Node.js and need no packages:
+
+```
+node tests/planner.test.js   # 27 checks
+node tests/figure.test.js    # 9 checks
+```
+
+The most important one generates **21,504 plans** (every combination of injury areas, posture problems, ages and weights) and fails if any plan contains an exercise that loads an injured area. The animation checks confirm that bone lengths never change, the head stays attached, nothing leaves the frame, and the body always rests on the floor.
+
+## Limitations
+
+- **Not medical advice.** PosturePilot gives general exercise guidance. It does not diagnose, treat or replace a doctor or physiotherapist.
+- **Not clinically validated.** The exercise library and the pain rules are conservative design choices. They have not been reviewed by a physiotherapist.
+- **Pain is self-reported**, so the plan can only respond to what you tell it.
+- **Side-view animations only.** Moves that need a front view (side bends, lateral raises) are not included yet.
+- **Data lives in one browser.** There is no syncing between devices. Use the backup file to move your data.
+- **Reminders need the site or your calendar.** A website cannot send alerts while closed. On iPhone, web notifications only work for installed apps, so the calendar option is the way to go there.
+- **Not an installable offline app yet.**
+
+## Evaluation plan
+
+- [ ] Have a physiotherapist review the exercises, the injury tags, the pain rules and the safety questions.
+- [ ] Run a small usability trial with 5 to 10 people. Measure the time to get a plan, whether the "why this exercise" notes make sense, and whether any plan felt unsuitable.
+- [ ] Optionally collect before and after pain ratings from willing volunteers over two weeks.
+
+Results will be added here once the trial is done.
+
+## Future work
+
+Installable offline app, more exercises (neck, wrist, ankle), front-view animations, an Urdu version, and optional accounts so progress syncs across devices.
+
+## Author
+
+Built by Parvez Ali.
