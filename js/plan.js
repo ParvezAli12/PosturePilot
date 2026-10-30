@@ -53,7 +53,7 @@
     $('sLoad').textContent = Math.round((plan.factor || 1) * 100) + '%';
 
     const last = h.sessions.length ? h.sessions[h.sessions.length - 1].date : null;
-    $('saved').textContent = 'Saved plan, created ' + nice(Store.get('planCreated')) + (last ? ', last workout ' + nice(last) : '') + '.';
+        $('saved').textContent = 'Saved plan, created ' + nice(Store.get('planCreated')) + (last ? ', last workout ' + nice(last) : '') + '.' + (plan.rotates ? ' Your routine changes every day to keep it fresh.' : '');
 
     $('notes').innerHTML = '';
     plan.notes.forEach((n) => {
