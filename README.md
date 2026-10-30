@@ -39,6 +39,10 @@ Students and desk workers with everyday posture aches who want a short, safe rou
 
 ## How it works
 
+### Daily variety
+
+The routine rotates every day so it stays fresh: each part (warm-up, stretch, strength) picks a different suitable exercise from the safe options. Today's plan stays the same all day and changes at midnight. Harder moves are earned: a new user starts with the gentlest options, one step harder unlocks after 3 workouts, and the hardest after 6 low-pain workouts in a row. Recent pain pulls the plan back to the gentlest options. Variety never overrides the safety rules, and it is limited when injuries leave few safe options.
+
 ### The injury filter
 
 The library has **30 exercises**. Each one records the body areas it puts load on (`loads`), such as `knee`, `shoulder` or `lower-back`. Each injury option records the areas it blocks. Building a plan is then a simple rule:
