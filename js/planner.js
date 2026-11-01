@@ -1,6 +1,6 @@
 /* Builds a personalised plan from:
    profile = { age, weight(kg), height(cm), concerns[], injuries[] }
-   history = { sessions: [{ date, pain?, hurt?[] }], banned: [exerciseId] }
+   history = { sessions: [{ date, pain?, effort?, hurt?[] }], banned: [exerciseId] }
    opts    = { day }  optional: which day to build for (defaults to today). The routine rotates daily. */
 const Planner = {
   bmi: (kg, cm) => kg / Math.pow(cm / 100, 2),
@@ -38,6 +38,24 @@ const Planner = {
     return { factor: 1, notes: [] };
   },
 
+  /* How hard the last workouts felt, from the "too easy / about right / too hard" buttons (most recent last).
+     E1 last one "too hard"            -> 85% load, gentlest options only
+     E2 last two "too hard"            -> 70% load
+     E3 last two "too easy"            -> +10% load, harder options may unlock early
+     E4 last three "too easy"          -> +20% load
+     "About right", or no rating, changes nothing. */
+  effortAdapt(sessions) {
+    const r = sessions.map((s) => s.effort).filter((e) => e === 'easy' || e === 'right' || e === 'hard');
+    let hardRun = 0, easyRun = 0;
+    for (let i = r.length - 1; i >= 0 && r[i] === 'hard'; i--) hardRun++;
+    for (let i = r.length - 1; i >= 0 && r[i] === 'easy'; i--) easyRun++;
+    if (hardRun >= 2) return { factor: 0.7, hardRun, easyRun, notes: ['You found your last two workouts too hard, so amounts are down 30%.'] };
+    if (hardRun === 1) return { factor: 0.85, hardRun, easyRun, notes: ['You found your last workout too hard, so amounts are down 15%.'] };
+    if (easyRun >= 3) return { factor: 1.2, hardRun, easyRun, notes: ['Your last three workouts felt easy, so amounts are up 20%.'] };
+    if (easyRun === 2) return { factor: 1.1, hardRun, easyRun, notes: ['Your last two workouts felt easy, so amounts are up 10%.'] };
+    return { factor: 1, hardRun, easyRun, notes: [] };
+  },
+
   /* a whole number that goes up by one at local midnight, used to rotate the routine day by day */
   dayNumber(d = new Date()) { return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5); },
 
@@ -47,6 +65,10 @@ const Planner = {
     const bmi = Planner.bmi(weight, height);
     const banned = new Set(history.banned || []);
     const adapt = Planner.adapt(history.sessions || []);
+    const eff = Planner.effortAdapt(history.sessions || []);
+    /* pain always wins: while pain is up, "too easy" can never add load */
+    const effFactor = adapt.factor < 1 ? Math.min(1, eff.factor) : eff.factor;
+    const adjust = Math.min(1.4, Math.max(0.4, adapt.factor * effFactor));
 
     const blocked = new Set();
     const injuryLabels = [];
@@ -59,7 +81,7 @@ const Planner = {
 
     const gentle = age >= 60 || age < 16 || bmi >= 30;
     const maxLevel = age >= 65 || bmi >= 35 ? 2 : 3;
-    const factor = (gentle ? 0.75 : 1) * adapt.factor;
+    const factor = (gentle ? 0.75 : 1) * adjust;
     const perConcern = gentle ? 2 : 3;
 
     /* Daily variety. Each day the plan picks a different exercise from the suitable ones for every part
@@ -69,9 +91,11 @@ const Planner = {
          span 2  one more step harder too    (6 or more low-pain workouts in a row) */
     const day = Number.isFinite(opts.day) ? opts.day : Planner.dayNumber();
     const done = (history.sessions || []).length;
-    const span = gentle || adapt.factor < 1 || done < 3 ? 0 : adapt.factor >= 1.2 ? 2 : 1;
+    const unlocked = done >= 3 || eff.easyRun >= 2;                      // two "too easy" ratings unlock harder moves early
+    const span = gentle || adapt.factor < 1 || eff.hardRun >= 1 || !unlocked ? 0 : adapt.factor >= 1.2 || eff.easyRun >= 3 ? 2 : 1;
 
     const notes = [...adapt.notes];
+    if (eff.factor < 1 || (eff.factor > 1 && adapt.factor >= 1)) notes.push(...eff.notes);
     const chosen = new Map(); // id -> { e, for: Set(concernId), pool }
 
     concerns.forEach((c, ci) => {
@@ -119,12 +143,14 @@ const Planner = {
         if (gentle) why.push('gentle amounts chosen for your age or body size');
         if (adapt.factor < 1) why.push('lighter after your last check-in');
         if (adapt.factor > 1) why.push('increased after low-pain sessions');
+        if (eff.factor < 1) why.push('lighter because you found the last workout hard');
+        if (effFactor > 1) why.push('a little more because recent workouts felt easy');
         return { id: e.id, sets: e.sets, reps: scale(e.reps), hold: e.hold ? scale(e.hold) : 0, why };
       });
 
     const secs = items.reduce((t, i) => t + i.sets * i.reps * (i.hold || 4) + (i.sets - 1) * 20 + 15, 0);
     return {
-      items, notes, factor, day, rotates: [...chosen.values()].some((c) => c.pool > 1),
+      items, notes, factor, day, effort: { hardRun: eff.hardRun, easyRun: eff.easyRun }, rotates: [...chosen.values()].some((c) => c.pool > 1),
       bmi: Math.round(bmi * 10) / 10, band: Planner.bmiBand(bmi),
       minutes: Math.max(5, Math.ceil(secs / 60))
     };
