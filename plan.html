@@ -158,6 +158,13 @@
     <input id="ciPain" type="range" min="0" max="10" value="3">
     <p class="big" id="ciVal" aria-live="polite"></p>
     <p class="note" id="ciAdvice" aria-live="polite" style="min-height:1.5em"></p>
+        <h3>How did the workout feel?</h3>
+    <div class="chipset" id="ciEffort" role="group" aria-label="How hard was the workout">
+      <button type="button" class="chip" data-e="easy" aria-pressed="false">Too easy</button>
+      <button type="button" class="chip" data-e="right" aria-pressed="false">About right</button>
+      <button type="button" class="chip" data-e="hard" aria-pressed="false">Too hard</button>
+    </div>
+    <p class="note" id="ciEffortNote" aria-live="polite" style="min-height:1.4em;margin:8px 0 14px"></p>
     <h3>Did any exercise hurt?</h3>
     <fieldset class="opts" id="ciList"><legend style="position:absolute;left:-9999px">Exercises that hurt</legend></fieldset>
     <div class="row">
