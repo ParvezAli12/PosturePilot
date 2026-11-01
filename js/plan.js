@@ -338,8 +338,21 @@
   }
   $('ciPain').addEventListener('input', showPain);
 
+    /* how hard the workout felt: too easy / about right / too hard */
+  let effort = null;
+  const EFFORT_NOTE = { easy: 'Noted. If it keeps feeling easy, your routine will build up.', right: 'Good. Your routine stays about the same.', hard: 'Noted. Your next routine will be lighter.' };
+  function setEffort(v) {
+    effort = v;
+    $('ciEffort').querySelectorAll('[data-e]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.e === v)));
+    $('ciEffortNote').textContent = v ? EFFORT_NOTE[v] : '';
+  }
+  $('ciEffort').addEventListener('click', (ev) => {
+    const b = ev.target.closest('[data-e]'); if (!b) return;
+    setEffort(effort === b.dataset.e ? null : b.dataset.e);
+  });
+
   function openCheckin() {
-    $('ciPain').value = 3; showPain();
+    $('ciPain').value = 3; showPain(); setEffort(null);
     $('ciList').innerHTML = plan.items.map((i) =>
       `<label class="opt"><input type="checkbox" value="${i.id}"><span>${byId(i.id).name}</span></label>`).join('');
     ci.showModal();
@@ -354,7 +367,7 @@
   }
   $('ciSave').onclick = () => {
     const hurt = [...$('ciList').querySelectorAll('input:checked')].map((x) => x.value);
-    saveSession({ date: today(), pain: +$('ciPain').value, hurt }, hurt);
+    saveSession({ date: today(), pain: +$('ciPain').value, hurt, ...(effort ? { effort } : {}) }, hurt);
   };
   $('ciSkip').onclick = () => saveSession({ date: today() }, []);
 
