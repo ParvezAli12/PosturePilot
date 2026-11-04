@@ -71,6 +71,8 @@ After each workout you rate your pain from 0 to 10 and can mark any exercise tha
 | R2 | Last pain 6 or higher, or a rise of 2 or more that reaches at least 4 | Load cut to 75% |
 | R3 | Last 3, 6 or 9 sessions all at pain 3 or lower | Load up 10%, 20% or 30% (the maximum) |
 | R4 | An exercise marked "this hurt" | Paused until you restore it |
+| E1/E2 | You rate a workout "Too hard" (once / twice in a row) | Load cut to 85% / 70%, gentlest exercises only |
+| E3/E4 | You rate workouts "Too easy" (twice / three times in a row) | Load up 10% / 20%, harder exercises unlock early |
 
 The rules are written in `js/planner.js` so they can be read, reviewed and tested.
 
