@@ -117,10 +117,10 @@ Plain HTML, CSS and JavaScript. No framework and no build step. Open `index.html
 ```
 index.html     landing page
 intake.html    four-step questionnaire
-plan.html      saved plan, guided workout, progress
+plan.html      saved plan, guided workout, progress report
 desk.html      two-minute desk break
 reminders.html reminder settings
-css/           styles, landing, workout, extras
+css/           styles, landing, workout
 js/
   exercises.js   the exercise library, problems, injuries, safety questions
   planner.js     plan builder: injury filter, intensity rules, pain rules
