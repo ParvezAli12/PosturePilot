@@ -122,16 +122,16 @@ desk.html      two-minute desk break
 reminders.html reminder settings
 css/           styles, landing, workout
 js/
-  exercises.js   the exercise library, problems, injuries, safety questions
-  planner.js     plan builder: injury filter, intensity rules, pain rules
-  figure.js      stick-figure animation engine
-  plan.js        plan page and the guided workout
-  workout-data.js timing details for each exercise
-  progress.js    streaks, calendar, backup and restore
-  desk-data.js, desk.js   the desk break
-  notify.js, reminders.js reminders and calendar files
-  home.js, intake.js, returning.js, storage.js, theme.js
-reminder-sw.js   tiny service worker so notifications work on phones
+  exercises.js         the exercise library, problems, injuries, safety questions.
+  planner.js            plan builder: injury filter, intensity rules, pain rules.
+  figure.js            stick-figure animation engine.
+  plan.js              plan page and the guided workout.
+  workout-data.js      timing details for each exercise.
+  progress.js          streaks, calendar, backup and restore.
+  desk-data.js,        desk.js   the desk break.
+  notify.js,           reminders.js reminders and calendar files.
+  home.js, intake.js,  returning.js, storage.js, theme.js.
+reminder-sw.js         tiny service worker so notifications work on phones.
 ```
 
 Fonts are Archivo, Public Sans and IBM Plex Mono, all under the SIL Open Font License.
